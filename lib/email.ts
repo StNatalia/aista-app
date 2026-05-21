@@ -3,7 +3,11 @@ import { FormData, GeneratedProfessionList } from '@/types'
 import path from 'path'
 import fs from 'fs'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+function getResend() {
+  const key = process.env.RESEND_API_KEY
+  if (!key) throw new Error('RESEND_API_KEY is not set')
+  return new Resend(key)
+}
 
 // ============================================================
 // Send the CV package to the client
@@ -54,7 +58,7 @@ export async function sendCVPackage({
     }
   })
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: 'AISTA CV Builder <cv@aista.be>',
     to: formData.email,
     subject: `Ваш CV готовий, ${formData.full_name.split(' ')[0]}! 🎉`,

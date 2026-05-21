@@ -168,7 +168,38 @@ export interface GenerateResponse {
 // --- Stripe -------------------------------------------------
 
 export interface CheckoutMetadata {
-  sessionId: string
+  order_id: string                // Supabase orders.id (uuid)
+}
+
+// --- Supabase: orders table row ----------------------------
+
+export type OrderStatus =
+  | 'pending'
+  | 'paid'
+  | 'generating'
+  | 'completed'
+  | 'failed'
+
+export interface OrderRow {
+  id: string
+  created_at: string
+  updated_at: string
   email: string
-  formDataEncoded: string         // JSON.stringify(FormData), stored in Stripe metadata
+  full_name: string
+  form_data: FormData
+  profession_id: string | null
+  track: Track | null
+  region: Region | null
+  output_language: Language | null
+  stripe_session_id: string | null
+  amount_eur: number
+  currency: string
+  status: OrderStatus
+  paid_at: string | null
+  generated_at: string | null
+  emailed_at: string | null
+  error_message: string | null
+  user_agent: string | null
+  ip_country: string | null
+  utm: Record<string, string> | null
 }
