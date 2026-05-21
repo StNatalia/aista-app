@@ -1,0 +1,107 @@
+{
+  "id": "teacher",
+  "uk_title": "Вчитель / Педагог / Методист",
+  "uk_title_variants": [
+    "вчитель",
+    "учитель",
+    "педагог",
+    "викладач",
+    "методист",
+    "вихователь",
+    "логопед",
+    "дефектолог",
+    "психолог шкільний",
+    "класний керівник",
+    "старший методист",
+    "завуч",
+    "директор школи",
+    "тренер",
+    "інструктор"
+  ],
+  "survival_track": {
+    "nl_title": "Kinderbegeleider / Begeleider buitenschoolse opvang",
+    "fr_title": "Animateur / Accompagnateur enfants",
+    "en_title": "Childcare Assistant / Youth Worker",
+    "isco_code": "5311",
+    "ats_keywords_nl": [
+      "kinderopvang", "begeleiding", "activiteiten", "communicatie",
+      "geduld", "empathie", "groepswerk", "verantwoordelijkheid",
+      "eerste hulp", "teamwork", "creatief"
+    ],
+    "ats_keywords_fr": [
+      "garde d'enfants", "accompagnement", "activités", "communication",
+      "patience", "empathie", "travail en équipe", "responsabilité",
+      "premiers secours", "créatif"
+    ],
+    "vdab_categories": [
+      "Kinderbegeleider",
+      "Begeleider buitenschoolse kinderopvang",
+      "Animator jeugdwerk",
+      "Bijlesgever (zelfstandig)"
+    ],
+    "salary_range_be": "€2.000 – €2.400 / maand (PC 319 / PC 332)"
+  },
+  "professional_track": {
+    "nl_title": "Educational Programme Coordinator",
+    "fr_title": "Coordinateur de programme éducatif",
+    "en_title": "Educational Programme Coordinator / Learning Designer",
+    "isco_code": "2320",
+    "ats_keywords_nl": [
+      "lesprogramma", "didactiek", "leerlingbegeleiding", "curriculum",
+      "onderwijsontwikkeling", "evaluatie", "differentiatie", "inclusief onderwijs",
+      "pedagogisch project", "coaching", "teamcoördinatie", "rapportage",
+      "competentieontwikkeling", "blended learning", "e-learning"
+    ],
+    "ats_keywords_fr": [
+      "programme pédagogique", "didactique", "accompagnement", "curriculum",
+      "développement éducatif", "évaluation", "différenciation", "enseignement inclusif",
+      "coaching", "coordination d'équipe", "rapport", "développement des compétences"
+    ],
+    "vdab_categories": [
+      "Coördinator educatieve programma's",
+      "Opleidingscoördinator",
+      "Pedagogisch medewerker",
+      "Trainer / Coach"
+    ],
+    "salary_range_be": "€2.800 – €4.000 / maand"
+  },
+  "experience_transforms": [
+    {
+      "uk_pattern": "Проводила уроки з [предмет] для учнів [клас]",
+      "nl_output": "Verzorgde lessen [vak] voor groepen van X leerlingen (leeftijd Y), met meetbare leerresultaten",
+      "fr_output": "Dispensé des cours de [matière] à des groupes de X élèves (âge Y), avec des résultats d'apprentissage mesurables"
+    },
+    {
+      "uk_pattern": "Розробляла навчальні програми та методичні матеріали",
+      "nl_output": "Ontwikkelde lesmateriaal en didactische programma's die de leerresultaten verbeterden met X%",
+      "fr_output": "Développé du matériel pédagogique et des programmes didactiques améliorant les résultats scolaires de X%"
+    },
+    {
+      "uk_pattern": "Здійснювала індивідуальну роботу з учнями",
+      "nl_output": "Bood individuele begeleiding aan leerlingen met specifieke leerbehoeften, met positieve resultaten in X% van de gevallen",
+      "fr_output": "Fourni un accompagnement individuel aux élèves ayant des besoins spécifiques, avec des résultats positifs dans X% des cas"
+    },
+    {
+      "uk_pattern": "Організовувала позакласні заходи та виховні заходи",
+      "nl_output": "Organiseerde buitenschoolse activiteiten en projecten voor groepen van X deelnemers",
+      "fr_output": "Organisé des activités parascolaires et des projets pour des groupes de X participants"
+    },
+    {
+      "uk_pattern": "Взаємодіяла з батьками та адміністрацією",
+      "nl_output": "Onderhield regelmatig contact met ouders en schoolbestuur, zorgde voor transparante communicatie",
+      "fr_output": "Maintenu un contact régulier avec les parents et la direction, assurant une communication transparente"
+    },
+    {
+      "uk_pattern": "Готувала учнів до олімпіад та конкурсів",
+      "nl_output": "Begeleidde leerlingen bij voorbereiding op wedstrijden; X% van de deelnemers behaalde een prijs",
+      "fr_output": "Accompagné des élèves pour des compétitions; X% des participants ont obtenu une récompense"
+    }
+  ],
+  "recognition_info": {
+    "required": true,
+    "body_nl": "NARIC Vlaanderen (voor bachelorsdiploma leerkracht). Onderwijsbevoegdheid: Agentschap voor Onderwijsdiensten (AGODI). Let op: vak- en niveaubevoegdheid vereist voor Vlaamse scholen",
+    "body_fr": "NARIC Wallonie-Bruxelles. Habilitation d'enseignement via la Fédération Wallonie-Bruxelles",
+    "duration_months": "6-18",
+    "notes": "Volledige erkenning als leerkracht in België vereist taalcertificaat (minimaal B2 Nederlands voor Vlaanderen). Tijdelijk: werken als kinderbegeleider of in niet-gereglementeerde sector mogelijk."
+  }
+}

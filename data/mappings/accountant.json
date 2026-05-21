@@ -1,0 +1,100 @@
+{
+  "id": "accountant",
+  "uk_title": "Бухгалтер / Економіст / Фінансовий аналітик",
+  "uk_title_variants": [
+    "бухгалтер",
+    "головний бухгалтер",
+    "старший бухгалтер",
+    "бухгалтер-касир",
+    "економіст",
+    "фінансовий аналітик",
+    "фінансовий менеджер",
+    "аналітик",
+    "фінансист",
+    "контролер",
+    "ревізор",
+    "аудитор"
+  ],
+  "survival_track": {
+    "nl_title": "Administratief medewerker boekhouding",
+    "fr_title": "Employé administratif comptabilité",
+    "en_title": "Accounting Administrative Assistant",
+    "isco_code": "4311",
+    "ats_keywords_nl": [
+      "boekhouding", "administratie", "facturen", "Excel", "data invoer",
+      "betalingen", "archivering", "rapportage", "nauwkeurig", "georganiseerd"
+    ],
+    "ats_keywords_fr": [
+      "comptabilité", "administration", "factures", "Excel", "encodage",
+      "paiements", "archivage", "reporting", "précis", "organisé"
+    ],
+    "vdab_categories": [
+      "Administratief bediende",
+      "Boekhoudkundig bediende",
+      "Financieel administratief medewerker"
+    ],
+    "salary_range_be": "€2.100 – €2.600 / maand (barema PC200)"
+  },
+  "professional_track": {
+    "nl_title": "Financieel coördinator",
+    "fr_title": "Coordinateur financier",
+    "en_title": "Financial Coordinator / Controller",
+    "isco_code": "2411",
+    "ats_keywords_nl": [
+      "financiële administratie", "budgetbeheer", "rapportage", "kostprijsberekening",
+      "maandafsluiting", "balans", "resultatenrekening", "SAP", "Exact", "fiscaliteit",
+      "BTW-aangifte", "jaarrekening", "interne controle", "cashflow", "forecasting"
+    ],
+    "ats_keywords_fr": [
+      "administration financière", "gestion budgétaire", "reporting", "clôture mensuelle",
+      "bilan", "compte de résultats", "SAP", "Exact", "fiscalité", "déclaration TVA",
+      "comptes annuels", "contrôle interne", "trésorerie", "prévisions"
+    ],
+    "vdab_categories": [
+      "Financieel coördinator",
+      "Controller",
+      "Boekhouder",
+      "Financieel adviseur"
+    ],
+    "salary_range_be": "€3.000 – €4.500 / maand"
+  },
+  "experience_transforms": [
+    {
+      "uk_pattern": "Відповідала за ведення бухгалтерського обліку",
+      "nl_output": "Beheerde de volledige financiële administratie, inclusief maandelijkse rapportages en afstemming van rekeningen",
+      "fr_output": "Géré la comptabilité complète, y compris les rapports mensuels et le rapprochement des comptes"
+    },
+    {
+      "uk_pattern": "Складала та подавала звітність",
+      "nl_output": "Stelde financiële rapporten op en diende deze tijdig in bij de bevoegde instanties",
+      "fr_output": "Préparé et soumis des rapports financiers aux autorités compétentes dans les délais impartis"
+    },
+    {
+      "uk_pattern": "Здійснювала контроль за дебіторською та кредиторською заборгованістю",
+      "nl_output": "Beheerde debiteuren- en crediteurenadministratie, reduceerde openstaande facturen met X%",
+      "fr_output": "Géré les créances et dettes clients/fournisseurs, réduisant les factures impayées de X%"
+    },
+    {
+      "uk_pattern": "Нараховувала та виплачувала заробітну плату",
+      "nl_output": "Verwerkte maandelijkse loonberekeningen voor een team van X medewerkers",
+      "fr_output": "Traité les calculs de salaires mensuels pour une équipe de X employés"
+    },
+    {
+      "uk_pattern": "Проводила аналіз фінансово-господарської діяльності",
+      "nl_output": "Analyseerde financiële prestaties en identificeerde kostenbesparingsmogelijkheden van X%",
+      "fr_output": "Analysé les performances financières et identifié des opportunités d'économies de X%"
+    },
+    {
+      "uk_pattern": "Складала кошторис та контролювала його виконання",
+      "nl_output": "Stelde budgetten op en monitorde de uitvoering, met een afwijking van minder dan X%",
+      "fr_output": "Élaboré des budgets et surveillé leur exécution, avec un écart inférieur à X%"
+    }
+  ],
+  "recognition_info": {
+    "required": false,
+    "body_nl": "Geen formele erkenning vereist voor administratieve functies. Voor gecertificeerde boekhouder: IAB (Instituut van de Accountants en de Belastingconsulenten)",
+    "body_fr": "Pas de reconnaissance formelle requise pour les fonctions administratives. Pour comptable certifié: IEC",
+    "duration_months": "6-12",
+    "notes": "Diploma erkenning via NARIC Vlaanderen aanbevolen voor hogere functies. Niet verplicht voor administratieve taken."
+  }
+}

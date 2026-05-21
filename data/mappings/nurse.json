@@ -1,0 +1,107 @@
+{
+  "id": "nurse",
+  "uk_title": "Медсестра / Лікар / Фармацевт / Медичний працівник",
+  "uk_title_variants": [
+    "медсестра",
+    "медична сестра",
+    "медбрат",
+    "фельдшер",
+    "акушерка",
+    "лікар",
+    "лікар загальної практики",
+    "сімейний лікар",
+    "терапевт",
+    "педіатр",
+    "хірург",
+    "стоматолог",
+    "фармацевт",
+    "провізор",
+    "лаборант",
+    "рентгенолаборант",
+    "фізіотерапевт",
+    "масажист медичний",
+    "санітар"
+  ],
+  "survival_track": {
+    "nl_title": "Zorgkundige / Verzorgende",
+    "fr_title": "Aide-soignant(e) / Soignant(e)",
+    "en_title": "Care Assistant / Healthcare Aide",
+    "isco_code": "5321",
+    "ats_keywords_nl": [
+      "zorgverlening", "patiëntenzorg", "persoonlijke verzorging", "hygiëne",
+      "medicatietoediening", "rapportage", "empathie", "teamwerk",
+      "verantwoordelijkheid", "ergonomie", "eerste hulp", "EHBO"
+    ],
+    "ats_keywords_fr": [
+      "soins", "soins aux patients", "soins personnels", "hygiène",
+      "administration médicaments", "rapportage", "empathie", "travail d'équipe",
+      "responsabilité", "ergonomie", "premiers secours"
+    ],
+    "vdab_categories": [
+      "Zorgkundige",
+      "Verzorgende in de thuiszorg",
+      "Medewerker woonzorgcentrum",
+      "Aide-soignant(e)"
+    ],
+    "salary_range_be": "€2.100 – €2.700 / maand (PC 330)"
+  },
+  "professional_track": {
+    "nl_title": "Verpleegkundige",
+    "fr_title": "Infirmier(ère) diplômé(e)",
+    "en_title": "Registered Nurse",
+    "isco_code": "2221",
+    "ats_keywords_nl": [
+      "verpleegkunde", "patiëntenzorg", "klinische observatie", "wondverzorging",
+      "medicatiebeheer", "zorgplan", "interdisciplinair team", "RIZIV-registratie",
+      "spoedgevallen", "intensieve zorg", "geriatrie", "pediatrie",
+      "patiënteneducatie", "elektronisch patiëntendossier", "EPIC", "Nexuz"
+    ],
+    "ats_keywords_fr": [
+      "soins infirmiers", "soins aux patients", "observation clinique", "soins de plaies",
+      "gestion médicaments", "plan de soins", "équipe interdisciplinaire", "INAMI",
+      "urgences", "soins intensifs", "gériatrie", "pédiatrie",
+      "éducation patient", "dossier patient informatisé"
+    ],
+    "vdab_categories": [
+      "Verpleegkundige",
+      "Gegradueerd verpleegkundige",
+      "Infirmier(ère)",
+      "Verpleegkundige intensieve zorgen"
+    ],
+    "salary_range_be": "€2.800 – €4.200 / maand (afhankelijk van sector en barema)"
+  },
+  "experience_transforms": [
+    {
+      "uk_pattern": "Здійснювала догляд за хворими та виконувала лікарські призначення",
+      "nl_output": "Verleende verpleegkundige zorg aan X patiënten per shift, voerde medische voorschriften nauwkeurig uit",
+      "fr_output": "Prodigué des soins infirmiers à X patients par shift, exécuté les prescriptions médicales avec précision"
+    },
+    {
+      "uk_pattern": "Проводила маніпуляції та процедури",
+      "nl_output": "Voerde klinische procedures uit (injecties, infusen, wondverzorging) met nul-fout prestatie",
+      "fr_output": "Effectué des procédures cliniques (injections, perfusions, soins de plaies) avec un taux d'erreur nul"
+    },
+    {
+      "uk_pattern": "Вела медичну документацію",
+      "nl_output": "Documenteerde patiëntgegevens nauwkeurig in elektronisch patiëntendossier; zorgde voor continuïteit van zorg",
+      "fr_output": "Documenté les données des patients avec précision dans le dossier patient informatisé; assuré la continuité des soins"
+    },
+    {
+      "uk_pattern": "Контролювала стан пацієнтів та вживала заходів",
+      "nl_output": "Monitorde vitale functies van X patiënten, signaleerde tijdig verslechtering en initieerde passende interventies",
+      "fr_output": "Surveillé les fonctions vitales de X patients, signalé rapidement toute dégradation et initié des interventions appropriées"
+    },
+    {
+      "uk_pattern": "Надавала першу медичну допомогу",
+      "nl_output": "Verleende eerste hulp in urgente situaties, handelde efficiënt conform geldende protocollen",
+      "fr_output": "Prodigué les premiers secours dans des situations urgentes, en agissant efficacement selon les protocoles en vigueur"
+    }
+  ],
+  "recognition_info": {
+    "required": true,
+    "body_nl": "RIZIV (Rijksinstituut voor Ziekte- en Invaliditeitsverzekering) — verplichte registratie voor alle verpleegkundigen. NARIC Vlaanderen voor diplomaerkenning. Procedure: ~6-12 maanden",
+    "body_fr": "INAMI (Institut national d'assurance maladie-invalidité) — enregistrement obligatoire. NARIC Wallonie-Bruxelles pour reconnaissance du diplôme",
+    "duration_months": "6-12",
+    "notes": "België heeft een actief tekort aan verpleegkundigen — RIZIV heeft vereenvoudigde procedures voor Oekraïense zorgverleners (2022-2024). Als zorgkundige werken is mogelijk zonder RIZIV-registratie en vormt een goede eerste stap."
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "id": "office-manager",
+  "uk_title": "Офіс-менеджер / HR-спеціаліст / Адміністратор",
+  "uk_title_variants": [
+    "офіс-менеджер",
+    "офісний менеджер",
+    "адміністратор",
+    "секретар",
+    "секретар-референт",
+    "діловод",
+    "HR-менеджер",
+    "HR-спеціаліст",
+    "менеджер з персоналу",
+    "інспектор відділу кадрів",
+    "кадровик",
+    "керівник адміністративного відділу",
+    "помічник керівника",
+    "особистий асистент"
+  ],
+  "survival_track": {
+    "nl_title": "Receptionist / Administratief medewerker",
+    "fr_title": "Réceptionniste / Employé administratif",
+    "en_title": "Receptionist / Administrative Assistant",
+    "isco_code": "4110",
+    "ats_keywords_nl": [
+      "onthaal", "receptie", "telefonisch contact", "agenda beheer",
+      "Microsoft Office", "administratie", "klantvriendelijk",
+      "organisatorisch", "nauwkeurig", "communicatief", "teamspeler"
+    ],
+    "ats_keywords_fr": [
+      "accueil", "réception", "contact téléphonique", "gestion agenda",
+      "Microsoft Office", "administration", "orienté client",
+      "organisé", "précis", "communicatif", "esprit d'équipe"
+    ],
+    "vdab_categories": [
+      "Onthaalmedewerker",
+      "Receptionist",
+      "Administratief bediende",
+      "Office assistant"
+    ],
+    "salary_range_be": "€2.000 – €2.500 / maand (PC 200)"
+  },
+  "professional_track": {
+    "nl_title": "HR-medewerker / Management assistant",
+    "fr_title": "Assistant RH / Assistant de direction",
+    "en_title": "HR Coordinator / Executive Assistant",
+    "isco_code": "3341",
+    "ats_keywords_nl": [
+      "personeelsbeheer", "rekrutering", "onboarding", "HR-processen",
+      "arbeidsrecht", "personeelsdossiers", "payroll", "Workday", "HR-rapportage",
+      "agendabeheer directie", "vergadercoördinatie", "interne communicatie",
+      "projectcoördinatie", "GDPR", "welzijn op het werk"
+    ],
+    "ats_keywords_fr": [
+      "gestion du personnel", "recrutement", "onboarding", "processus RH",
+      "droit du travail", "dossiers du personnel", "paie", "Workday", "reporting RH",
+      "gestion agenda direction", "coordination réunions", "communication interne",
+      "coordination de projets", "RGPD", "bien-être au travail"
+    ],
+    "vdab_categories": [
+      "HR-medewerker",
+      "Personeelsmedewerker",
+      "Management assistant",
+      "Directiesecretaresse"
+    ],
+    "salary_range_be": "€2.600 – €3.800 / maand"
+  },
+  "experience_transforms": [
+    {
+      "uk_pattern": "Організовувала роботу офісу та координувала адміністративні процеси",
+      "nl_output": "Coördineerde de dagelijkse kantoorwerking en optimaliseerde administratieve processen, wat leidde tot X% tijdsbesparing",
+      "fr_output": "Coordonné le fonctionnement quotidien du bureau et optimisé les processus administratifs, générant X% de gain de temps"
+    },
+    {
+      "uk_pattern": "Вела кадрову документацію та облік робочого часу",
+      "nl_output": "Beheerde personeelsdossiers en tijdsregistratie voor een team van X medewerkers conform de Belgische arbeidsreglementering",
+      "fr_output": "Géré les dossiers du personnel et l'enregistrement du temps pour une équipe de X employés conformément à la législation sociale belge"
+    },
+    {
+      "uk_pattern": "Здійснювала підбір персоналу та проводила співбесіди",
+      "nl_output": "Voerde rekruterings- en selectieprocedures uit; selecteerde X kandidaten per jaar voor diverse functies",
+      "fr_output": "Mené des procédures de recrutement et de sélection; retenu X candidats par an pour diverses fonctions"
+    },
+    {
+      "uk_pattern": "Забезпечувала документообіг та діловодство",
+      "nl_output": "Beheerde documentenstromen en correspondentie (gemiddeld X documenten/maand), zorgde voor nauwkeurige archivering",
+      "fr_output": "Géré les flux documentaires et la correspondance (moyenne de X documents/mois), assurant un archivage précis"
+    },
+    {
+      "uk_pattern": "Планувала робочий час та зустрічі керівника",
+      "nl_output": "Beheerde de agenda van X directieleden, inclusief internationale afspraken en complexe reisplanningen",
+      "fr_output": "Géré l'agenda de X membres de la direction, y compris des rendez-vous internationaux et des déplacements complexes"
+    }
+  ],
+  "recognition_info": {
+    "required": false,
+    "body_nl": "Geen formele erkenning vereist. NARIC Vlaanderen aanbevolen voor hogere HR-functies met specifieke vereisten",
+    "body_fr": "Pas de reconnaissance formelle requise. NARIC Wallonie-Bruxelles recommandé pour fonctions RH supérieures",
+    "duration_months": "3-6",
+    "notes": "Meest toegankelijke professionele track voor herintrede. Taalcertificaat B1-B2 Nederlands sterk aanbevolen voor Vlaamse werkgevers."
+  }
+}
