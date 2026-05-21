@@ -2,12 +2,16 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { FormData } from '@/types'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+// Lazy init — avoids build-time crash when env var not yet set
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!)
+}
 
 // Create a Stripe Checkout session.
 // Called when user submits the form and clicks "Pay €9".
 export async function POST(req: NextRequest) {
   try {
+    const stripe = getStripe()
     const body = await req.json()
     const formData: FormData = body.formData
 
