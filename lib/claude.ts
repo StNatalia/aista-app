@@ -1,9 +1,12 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { FormData, ProfessionMapping, GeneratedCV, GeneratedMotivationLetter, GeneratedProfessionList } from '@/types'
 
-const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-})
+// Lazy init — avoids build-time crash when env var not yet set
+function getClient() {
+  return new Anthropic({
+    apiKey: process.env.ANTHROPIC_API_KEY,
+  })
+}
 
 // ============================================================
 // SYSTEM PROMPT — sets up Claude as a Belgian CV expert
@@ -42,7 +45,7 @@ export async function generateCVPackage(
 
   const userPrompt = buildUserPrompt(formData, mapping, lang)
 
-  const message = await client.messages.create({
+  const message = await getClient().messages.create({
     model: 'claude-sonnet-4-5',
     max_tokens: 4096,
     system: SYSTEM_PROMPT,
