@@ -15,6 +15,10 @@ export function supabaseAdmin(): SupabaseClient {
   if (!key) throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set')
   _admin = createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
+    global: {
+      fetch: (input: RequestInfo | URL, init?: RequestInit) =>
+        fetch(input, { ...init, cache: 'no-store' }),
+    },
   })
   return _admin
 }
