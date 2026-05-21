@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    console.log('STEP1: starting supabase insert')
     // ── 1. Create order row in Supabase ───────────────────────
     const supabase = supabaseAdmin()
     const { data: order, error: dbError } = await supabase
@@ -58,6 +59,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    console.log('STEP2: supabase done, order id:', order.id, 'starting stripe')
     // ── 2. Stripe Checkout session ─────────────────────────────
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card', 'bancontact', 'ideal'],
@@ -86,6 +88,7 @@ export async function POST(req: NextRequest) {
       },
     })
 
+    console.log('STEP3: stripe session created:', session.id)
     // ── 3. Link the Stripe session id back to the order ───────
     await supabase
       .from('orders')
