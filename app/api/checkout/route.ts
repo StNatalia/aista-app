@@ -63,7 +63,6 @@ export async function POST(req: NextRequest) {
       ? `https://${process.env.VERCEL_URL}`
       : 'https://aista-app.vercel.app'
 
-    console.log('STEP2: stripe with VERCEL_URL:', baseUrl)
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card', 'bancontact', 'ideal'],
       line_items: [
@@ -87,7 +86,6 @@ export async function POST(req: NextRequest) {
       metadata: { order_id: order.id },
     })
 
-    console.log('STEP3: stripe session created:', session.id)
 
     // ── 3. Link the Stripe session id back to the order ───────
     await supabase
