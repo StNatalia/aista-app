@@ -34,14 +34,16 @@ export async function POST(req: NextRequest) {
     // TEMP: bypass Supabase to isolate Stripe connectivity
     const order = { id: 'test-order-' + Date.now() }
 
-    console.log('STEP2: starting stripe minimal')
-    // TEMP: absolute minimal Stripe session
+    console.log('STEP2: starting stripe with env URLs')
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://aista-app.vercel.app'
+    console.log('STEP2a: baseUrl=', baseUrl, 'len=', baseUrl.length)
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
       line_items: [{ price_data: { currency: 'eur', product_data: { name: 'AISTA CV' }, unit_amount: 900 }, quantity: 1 }],
-      success_url: 'https://aista-app.vercel.app/success',
-      cancel_url: 'https://aista-app.vercel.app/form',
+      success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/form?cancelled=true`,
+      customer_email: formData.email,
     })
 
     console.log('STEP3: stripe session created:', session.id)
