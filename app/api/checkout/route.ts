@@ -33,30 +33,36 @@ export async function POST(req: NextRequest) {
     console.log('STEP1: starting supabase insert')
     // ── 1. Create order row in Supabase ───────────────────────
     const supabase = supabaseAdmin()
-    const { data: order, error: dbError } = await supabase
-      .from('orders')
-      .insert({
-        email: formData.email.toLowerCase().trim(),
-        full_name: formData.full_name,
-        form_data: formData,
-        profession_id: formData.profession_id,
-        track: formData.track,
-        region: formData.region,
-        output_language: formData.output_language,
-        status: 'pending',
-        amount_eur: 9.0,
-        user_agent: req.headers.get('user-agent'),
-        ip_country: req.headers.get('x-vercel-ip-country') ?? null,
-      })
-      .select('id')
-      .single()
-
-    if (dbError || !order) {
-      console.error('Supabase insert failed:', dbError)
-      return NextResponse.json(
-        { error: 'Could not save order', details: String(dbError?.message) },
-        { status: 500 },
-      )
+    let order: { id: string } | null = null
+    try {
+      const result = await supabase
+        .from('orders')
+        .insert({
+          email: formData.email.toLowerCase().trim(),
+          full_name: formData.full_name,
+          form_data: formData,
+          profession_id: formData.profession_id,
+          track: formData.track,
+          region: formData.region,
+          output_language: formData.output_language,
+          status: 'pending',
+          amount_eur: 9.0,
+          user_agent: req.headers.get('user-agent'),
+          ip_country: req.headers.get('x-vercel-ip-country') ?? null,
+        })
+        .select('id')
+        .single()
+      if (result.error || !result.data) {
+        console.error('Supabase insert failed:', result.error)
+        return NextResponse.json(
+          { error: 'Could not save order', details: String(result.error?.message) },
+          { status: 500 },
+        )
+      }
+      order = result.data
+    } catch (supaErr) {
+      console.error('Supabase threw exception:', supaErr)
+      return NextResponse.json({ error: 'Supabase exception', details: String(supaErr) }, { status: 500 })
     }
 
     console.log('STEP2: supabase done, order id:', order.id, 'starting stripe')
