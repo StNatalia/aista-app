@@ -59,7 +59,7 @@ export async function sendCVPackage({
   })
 
   await getResend().emails.send({
-    from: 'AISTA CV Builder <cv@aista.be>',
+    from: 'AISTA CV Builder <onboarding@resend.dev>',
     to: formData.email,
     subject: `Ваш CV готовий, ${formData.full_name.split(' ')[0]}! 🎉`,
     html: buildEmailHtml(formData, professionListHtml),

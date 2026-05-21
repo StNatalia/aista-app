@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
               name: 'AISTA — CV пакет для Бельгії',
               description:
                 'CV нідерландською/французькою + мотиваційний лист + список вакансій + 4 уроки нідерландської',
-              images: ['https://aista.be/og-image.png'],
+              images: ['https://aista-app.vercel.app/images/og-image.png'],
             },
             unit_amount: 900, // €9.00 in cents
           },
