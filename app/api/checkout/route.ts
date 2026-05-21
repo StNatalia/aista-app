@@ -34,33 +34,14 @@ export async function POST(req: NextRequest) {
     // TEMP: bypass Supabase to isolate Stripe connectivity
     const order = { id: 'test-order-' + Date.now() }
 
-    console.log('STEP2: starting stripe')
-    // ── 2. Stripe Checkout session ─────────────────────────────
+    console.log('STEP2: starting stripe minimal')
+    // TEMP: absolute minimal Stripe session
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card', 'bancontact', 'ideal'],
-      line_items: [
-        {
-          price_data: {
-            currency: 'eur',
-            product_data: {
-              name: 'AISTA - CV Package for Belgium',
-              description:
-                'CV in Dutch/French + motivation letter + job list + 4 Dutch lessons',
-              images: ['https://aista-app.vercel.app/images/og-image.png'],
-            },
-            unit_amount: 900, // €9.00 in cents
-          },
-          quantity: 1,
-        },
-      ],
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/form?cancelled=true`,
-      customer_email: formData.email,
-      metadata: {
-        // Single source of truth — webhook fetches the rest from Supabase
-        order_id: order.id,
-      },
+      payment_method_types: ['card'],
+      line_items: [{ price_data: { currency: 'eur', product_data: { name: 'AISTA CV' }, unit_amount: 900 }, quantity: 1 }],
+      success_url: 'https://aista-app.vercel.app/success',
+      cancel_url: 'https://aista-app.vercel.app/form',
     })
 
     console.log('STEP3: stripe session created:', session.id)
