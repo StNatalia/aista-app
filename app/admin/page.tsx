@@ -41,7 +41,13 @@ export default async function AdminPage({
       }
     }
   } catch (e) {
-    error = String(e instanceof Error ? e.message : e)
+    if (e instanceof Error) {
+      error = e.message
+    } else if (e && typeof e === 'object') {
+      error = JSON.stringify(e)
+    } else {
+      error = String(e)
+    }
   }
 
   return (
