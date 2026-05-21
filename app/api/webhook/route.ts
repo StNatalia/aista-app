@@ -4,7 +4,9 @@ import { FormData } from '@/types'
 import { supabaseAdmin } from '@/lib/supabase'
 
 function getStripe() {
-  return new Stripe(process.env.STRIPE_SECRET_KEY!)
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    httpClient: Stripe.createNodeHttpClient(),
+  })
 }
 
 // Stripe webhook — fires after successful payment.
