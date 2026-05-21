@@ -5,35 +5,68 @@ import { sendCVPackage } from '@/lib/email'
 import { getMappingById } from '@/lib/mappings'
 import { FormData } from '@/types'
 
-// This endpoint is called by the Stripe webhook after successful payment.
-// It generates the full CV package and sends it to the user via email.
+// Called by the Stripe webhook after successful payment.
 export async function POST(req: NextRequest) {
+  const t0 = Date.now()
+  const elapsed = () => `+${Date.now() - t0}ms`
+
   try {
     const body = await req.json()
     const formData: FormData = body.formData
+    console.log(`[generate] START — profession: ${formData.profession_id}, email: ${formData.email}`)
 
-    // 1. Load the profession mapping
+    // 1. Mapping lookup
     const mapping = getMappingById(formData.profession_id)
     if (!mapping) {
+      console.error(`[generate] ${elapsed()} — mapping not found: ${formData.profession_id}`)
       return NextResponse.json(
         { error: `Profession mapping not found: ${formData.profession_id}` },
         { status: 400 }
       )
     }
+    console.log(`[generate] ${elapsed()} — mapping OK`)
 
-    // 2. Generate CV content via Claude API
-    const { cv, motivationLetter, professionList } = await generateCVPackage(formData, mapping)
+    // 2. Claude API — generates CV + motivation letter + profession list
+    console.log(`[generate] ${elapsed()} — calling Claude...`)
+    let cv, motivationLetter, professionList
+    try {
+      ;({ cv, motivationLetter, professionList } = await generateCVPackage(formData, mapping))
+    } catch (err) {
+      console.error(`[generate] ${elapsed()} — Claude FAILED:`, err)
+      throw err
+    }
+    console.log(`[generate] ${elapsed()} — Claude OK`)
 
-    // 3. Generate DOCX files
-    const cvDocxBuffer = await generateCVDocx(cv)
-    const motivationDocxBuffer = await generateMotivationLetterDocx(motivationLetter, formData.full_name)
+    // 3. Generate both DOCX files in parallel (they're independent)
+    console.log(`[generate] ${elapsed()} — generating DOCX files (parallel)...`)
+    let cvDocxBuffer: Buffer
+    let motivationDocxBuffer: Buffer
+    try {
+      ;[cvDocxBuffer, motivationDocxBuffer] = await Promise.all([
+        generateCVDocx(cv),
+        generateMotivationLetterDocx(motivationLetter, formData.full_name),
+      ])
+    } catch (err) {
+      console.error(`[generate] ${elapsed()} — DOCX generation FAILED:`, err)
+      throw err
+    }
+    console.log(
+      `[generate] ${elapsed()} — DOCX OK — CV: ${cvDocxBuffer.length}b, letter: ${motivationDocxBuffer.length}b`
+    )
 
-    // 4. Send email with DOCX files + PDF lessons
-    await sendCVPackage({ formData, cvDocxBuffer, motivationDocxBuffer, professionList })
+    // 4. Send email
+    console.log(`[generate] ${elapsed()} — sending email...`)
+    try {
+      await sendCVPackage({ formData, cvDocxBuffer, motivationDocxBuffer, professionList })
+    } catch (err) {
+      console.error(`[generate] ${elapsed()} — Email FAILED:`, err)
+      throw err
+    }
+    console.log(`[generate] ${elapsed()} — email sent. DONE.`)
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Generation error:', error)
+    console.error(`[generate] +${Date.now() - t0}ms — UNHANDLED ERROR:`, error)
     return NextResponse.json(
       { error: 'Generation failed', details: String(error) },
       { status: 500 }

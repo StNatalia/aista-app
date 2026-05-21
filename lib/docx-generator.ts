@@ -326,9 +326,9 @@ export async function generateMotivationLetterDocx(
           }),
           // Divider
           new Paragraph({
-            border: { bottom: { color: COLORS.accent, size: 6, style: BorderStyle.SINGLE } },
+            border: { bottom: { color: COLORS.accent, size: 6, style: BorderStyle.SINGLE, space: 4 } },
             spacing: { after: 320 },
-            children: [],
+            children: [new TextRun({ text: '' })],
           }),
           // 4 paragraphs of the letter
           new Paragraph({
