@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { FormData } from '@/types'
-// import { supabaseAdmin } from '@/lib/supabase' // TEMP disabled
+import { supabaseAdmin } from '@/lib/supabase'
 
 export const dynamic = 'force-dynamic'
 
@@ -30,23 +30,71 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    console.log('STEP1: skipping supabase, testing stripe only')
-    // TEMP: bypass Supabase to isolate Stripe connectivity
-    const order = { id: 'test-order-' + Date.now() }
+    // ── 1. Create order row in Supabase ───────────────────────
+    const supabase = supabaseAdmin()
+    const { data: order, error: dbError } = await supabase
+      .from('orders')
+      .insert({
+        email: formData.email.toLowerCase().trim(),
+        full_name: formData.full_name,
+        form_data: formData,
+        profession_id: formData.profession_id,
+        track: formData.track,
+        region: formData.region,
+        output_language: formData.output_language,
+        status: 'pending',
+        amount_eur: 9.0,
+        user_agent: req.headers.get('user-agent'),
+        ip_country: req.headers.get('x-vercel-ip-country') ?? null,
+      })
+      .select('id')
+      .single()
 
-    console.log('STEP2: stripe with hardcoded URLs')
+    if (dbError || !order) {
+      console.error('Supabase insert failed:', dbError)
+      return NextResponse.json(
+        { error: 'Could not save order', details: String(dbError?.message) },
+        { status: 500 },
+      )
+    }
+
+    // Use VERCEL_URL (system env, always ASCII) instead of NEXT_PUBLIC_BASE_URL
+    const baseUrl = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'https://aista-app.vercel.app'
+
+    console.log('STEP2: stripe with VERCEL_URL:', baseUrl)
     const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card', 'bancontact', 'ideal'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'eur',
+            product_data: {
+              name: 'AISTA - CV Package for Belgium',
+              description: 'CV in Dutch/French + motivation letter + job list + 4 Dutch lessons',
+              images: ['https://aista-app.vercel.app/images/og-image.png'],
+            },
+            unit_amount: 900,
+          },
+          quantity: 1,
+        },
+      ],
       mode: 'payment',
-      payment_method_types: ['card'],
-      line_items: [{ price_data: { currency: 'eur', product_data: { name: 'AISTA CV' }, unit_amount: 900 }, quantity: 1 }],
-      success_url: 'https://aista-app.vercel.app/success?session_id={CHECKOUT_SESSION_ID}',
-      cancel_url: 'https://aista-app.vercel.app/form?cancelled=true',
+      success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/form?cancelled=true`,
       customer_email: formData.email,
+      metadata: { order_id: order.id },
     })
-    console.log('STEP3: stripe OK, session:', session.id)
 
     console.log('STEP3: stripe session created:', session.id)
-    // TEMP: skip Supabase update
+
+    // ── 3. Link the Stripe session id back to the order ───────
+    await supabase
+      .from('orders')
+      .update({ stripe_session_id: session.id })
+      .eq('id', order.id)
+
     return NextResponse.json({ url: session.url, order_id: order.id })
   } catch (error) {
     console.error('Stripe checkout error:', error)
