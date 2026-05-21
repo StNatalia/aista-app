@@ -1,19 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { FormData } from '@/types'
+import { supabaseAdmin } from '@/lib/supabase'
 
 function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY!)
 }
 
 // Stripe webhook — fires after successful payment.
-// Reconstructs form data and triggers CV generation.
+// Flow:
+//   1. Verify Stripe signature
+//   2. Fetch order from Supabase by order_id (from session metadata)
+//   3. Mark as paid → call /api/generate → mark as completed/failed
 export async function POST(req: NextRequest) {
   const body = await req.text()
   const signature = req.headers.get('stripe-signature')!
 
   let event: Stripe.Event
-
   try {
     const stripe = getStripe()
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!
@@ -23,47 +26,79 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
-  // Only handle successful payment events
   if (event.type !== 'checkout.session.completed') {
     return NextResponse.json({ received: true })
   }
 
   const session = event.data.object as Stripe.Checkout.Session
+  const orderId = session.metadata?.order_id
+
+  if (!orderId) {
+    console.error('Webhook: missing order_id in session metadata')
+    return NextResponse.json({ received: true, error: 'no order_id' })
+  }
+
+  const supabase = supabaseAdmin()
+
+  // ── 1. Mark as paid ─────────────────────────────────────────
+  const { data: order, error: fetchError } = await supabase
+    .from('orders')
+    .update({
+      status: 'paid',
+      paid_at: new Date().toISOString(),
+    })
+    .eq('id', orderId)
+    .select('id, email, form_data, status')
+    .single()
+
+  if (fetchError || !order) {
+    console.error('Webhook: order not found', orderId, fetchError)
+    return NextResponse.json({ received: true, error: 'order not found' })
+  }
+
+  const formData = order.form_data as FormData
+
+  // ── 2. Mark as generating ──────────────────────────────────
+  await supabase
+    .from('orders')
+    .update({ status: 'generating' })
+    .eq('id', orderId)
 
   try {
-    // Reconstruct form data from Stripe metadata chunks
-    const meta = session.metadata!
-    const totalLength = parseInt(meta.form_total_length || '0')
-
-    let formDataJson = ''
-    formDataJson += meta.form_chunk_1 || ''
-    formDataJson += meta.form_chunk_2 || ''
-    formDataJson += meta.form_chunk_3 || ''
-    formDataJson += meta.form_chunk_4 || ''
-    formDataJson += meta.form_chunk_5 || ''
-
-    formDataJson = formDataJson.slice(0, totalLength)
-    const formData: FormData = JSON.parse(formDataJson)
-
-    // Call our generate endpoint
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
     const response = await fetch(`${baseUrl}/api/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ formData }),
+      body: JSON.stringify({ formData, orderId }),
     })
 
     if (!response.ok) {
-      const error = await response.json()
+      const error = await response.json().catch(() => ({}))
       throw new Error(`Generation failed: ${JSON.stringify(error)}`)
     }
 
-    console.log(`✅ CV package sent to ${formData.email}`)
+    // ── 3. Mark completed ───────────────────────────────────
+    await supabase
+      .from('orders')
+      .update({
+        status: 'completed',
+        generated_at: new Date().toISOString(),
+        emailed_at: new Date().toISOString(),
+      })
+      .eq('id', orderId)
+
+    console.log(`✅ CV package sent to ${formData.email} (order ${orderId})`)
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Webhook processing error:', error)
-    // Return 200 to Stripe so it doesn't retry (we'll handle errors internally)
-    // In production: add error logging / alerting here
+    await supabase
+      .from('orders')
+      .update({
+        status: 'failed',
+        error_message: String(error).slice(0, 1000),
+      })
+      .eq('id', orderId)
+    // Return 200 to Stripe — we own the retry logic via /admin
     return NextResponse.json({ received: true, error: String(error) })
   }
 }

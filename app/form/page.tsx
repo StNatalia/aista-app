@@ -83,30 +83,31 @@ export default function FormPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 py-8 px-4">
-      <div className="max-w-lg mx-auto">
+    <main className="min-h-screen bg-cream pb-32 sm:pb-12">
+      <div className="max-w-lg mx-auto px-4 sm:px-6 pt-6 sm:pt-12">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-slate-800">AISTA</h1>
-          <p className="text-slate-500 text-sm mt-1">Ваш досвід — мовою бельгійського роботодавця</p>
+        <div className="flex items-center justify-between mb-6">
+          <a href="/" className="flex items-center gap-2">
+            <span className="grid place-items-center size-8 rounded-full bg-forest text-cream font-display text-base">
+              A
+            </span>
+            <span className="font-display text-xl tracking-tight text-ink">AISTA</span>
+          </a>
+          <span className="text-xs text-muted">Крок {step} з {TOTAL_STEPS}</span>
         </div>
 
         {/* Progress bar */}
         <div className="mb-6">
-          <div className="flex justify-between text-xs text-slate-400 mb-1">
-            <span>Крок {step} з {TOTAL_STEPS}</span>
-            <span>{Math.round((step / TOTAL_STEPS) * 100)}%</span>
-          </div>
-          <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
+          <div className="h-1.5 bg-cream-2 rounded-full overflow-hidden">
             <div
-              className="h-full bg-blue-600 rounded-full transition-all duration-300"
+              className="h-full bg-forest rounded-full transition-all duration-500 ease-out"
               style={{ width: `${(step / TOTAL_STEPS) * 100}%` }}
             />
           </div>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+        <div className="bg-white rounded-3xl card-shadow border border-ink/5 p-6 sm:p-8">
           {step === 1 && <Step1 form={form} update={update} />}
           {step === 2 && <Step2 form={form} update={update} />}
           {step === 3 && <Step3 form={form} update={update} />}
@@ -115,12 +116,12 @@ export default function FormPage() {
           {step === 6 && <Step6 form={form} update={update} />}
           {step === 7 && <Step7 form={form} update={update} />}
 
-          {/* Navigation */}
-          <div className="flex gap-3 mt-6">
+          {/* Desktop nav (inline) */}
+          <div className="hidden sm:flex gap-3 mt-8">
             {step > 1 && (
               <button
                 onClick={back}
-                className="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 font-medium hover:bg-slate-50 transition-colors"
+                className="btn-press flex-1 py-3.5 rounded-full border border-ink/10 text-ink-soft font-medium hover:bg-cream-2"
               >
                 ← Назад
               </button>
@@ -129,7 +130,7 @@ export default function FormPage() {
               <button
                 onClick={next}
                 disabled={!isStepValid(step, form)}
-                className="flex-1 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="btn-press flex-1 py-3.5 rounded-full bg-forest text-cream font-semibold hover:bg-sage-dark disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Далі →
               </button>
@@ -137,7 +138,7 @@ export default function FormPage() {
               <button
                 onClick={handleSubmit}
                 disabled={isSubmitting || !isStepValid(step, form)}
-                className="flex-1 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="btn-press flex-1 py-3.5 rounded-full bg-forest text-cream font-semibold hover:bg-sage-dark disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? 'Обробка...' : 'Оплатити €9 та отримати CV →'}
               </button>
@@ -145,14 +146,46 @@ export default function FormPage() {
           </div>
 
           {error && (
-            <p className="mt-3 text-sm text-red-600 text-center">{error}</p>
+            <p className="mt-3 text-sm text-clay text-center">{error}</p>
           )}
         </div>
 
         {/* Trust indicators */}
-        <p className="text-center text-xs text-slate-400 mt-4">
-          🔒 Оплата через Stripe · Ваші дані захищені · Повернення коштів протягом 24 годин
+        <p className="text-center text-xs text-muted mt-5 leading-relaxed">
+          🔒 Stripe · Bancontact, Visa, Mastercard · Повернення протягом 24 годин
         </p>
+      </div>
+
+      {/* Mobile sticky nav */}
+      <div className="fixed bottom-0 left-0 right-0 sm:hidden border-t border-ink/10 bg-cream/95 backdrop-blur-md p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] z-50">
+        <div className="flex gap-2">
+          {step > 1 && (
+            <button
+              onClick={back}
+              className="btn-press shrink-0 px-5 py-3.5 rounded-full border border-ink/10 text-ink-soft font-medium hover:bg-cream-2"
+              aria-label="Назад"
+            >
+              ←
+            </button>
+          )}
+          {step < TOTAL_STEPS ? (
+            <button
+              onClick={next}
+              disabled={!isStepValid(step, form)}
+              className="btn-press flex-1 py-3.5 rounded-full bg-forest text-cream font-semibold hover:bg-sage-dark disabled:opacity-40"
+            >
+              Далі →
+            </button>
+          ) : (
+            <button
+              onClick={handleSubmit}
+              disabled={isSubmitting || !isStepValid(step, form)}
+              className="btn-press flex-1 py-3.5 rounded-full bg-forest text-cream font-semibold hover:bg-sage-dark disabled:opacity-40"
+            >
+              {isSubmitting ? 'Обробка...' : 'Оплатити €9 →'}
+            </button>
+          )}
+        </div>
       </div>
     </main>
   )
@@ -183,14 +216,14 @@ type StepProps = { form: FormData; update: (field: keyof FormData, value: unknow
 function StepTitle({ title, subtitle }: { title: string; subtitle?: string }) {
   return (
     <div className="mb-5">
-      <h2 className="text-lg font-bold text-slate-800">{title}</h2>
-      {subtitle && <p className="text-sm text-slate-500 mt-1">{subtitle}</p>}
+      <h2 className="text-lg font-bold text-ink">{title}</h2>
+      {subtitle && <p className="text-sm text-muted mt-1">{subtitle}</p>}
     </div>
   )
 }
 
 function Label({ children }: { children: React.ReactNode }) {
-  return <label className="block text-sm font-medium text-slate-700 mb-1">{children}</label>
+  return <label className="block text-sm font-medium text-ink mb-1">{children}</label>
 }
 
 function Select({ value, onChange, children }: { value: string; onChange: (v: string) => void; children: React.ReactNode }) {
@@ -198,7 +231,7 @@ function Select({ value, onChange, children }: { value: string; onChange: (v: st
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      className="w-full px-3 py-2.5 rounded-xl border border-ink/10 bg-white text-ink text-sm focus:outline-none focus:ring-2 focus:ring-forest/30"
     >
       {children}
     </select>
@@ -212,7 +245,7 @@ function Input({ value, onChange, placeholder, type = 'text' }: { value: string 
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      className="w-full px-3 py-2.5 rounded-xl border border-ink/10 text-ink text-sm focus:outline-none focus:ring-2 focus:ring-forest/30"
     />
   )
 }
@@ -224,7 +257,7 @@ function Textarea({ value, onChange, placeholder, rows = 4 }: { value: string; o
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       rows={rows}
-      className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+      className="w-full px-3 py-2.5 rounded-xl border border-ink/10 text-ink text-sm focus:outline-none focus:ring-2 focus:ring-forest/30 resize-none"
     />
   )
 }
@@ -247,12 +280,12 @@ function Step1({ form, update }: StepProps) {
               onClick={() => update('track', opt.value)}
               className={`p-4 rounded-xl border-2 text-left transition-all ${
                 form.track === opt.value
-                  ? 'border-blue-600 bg-blue-50'
-                  : 'border-slate-200 hover:border-slate-300'
+                  ? 'border-forest bg-sage-light/30'
+                  : 'border-ink/10 hover:border-ink/10'
               }`}
             >
-              <p className="font-semibold text-sm text-slate-800">{opt.label}</p>
-              <p className="text-xs text-slate-500 mt-0.5">{opt.desc}</p>
+              <p className="font-semibold text-sm text-ink">{opt.label}</p>
+              <p className="text-xs text-muted mt-0.5">{opt.desc}</p>
             </button>
           ))}
         </div>
@@ -307,7 +340,7 @@ function Step2({ form, update }: StepProps) {
           onChange={(v) => update('uk_job_title', v)}
           placeholder="напр. Головний бухгалтер / Старший методист"
         />
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-muted mt-1">
           Пишіть так, як написано у трудовій книжці або дипломі
         </p>
       </div>
@@ -363,7 +396,7 @@ function Step3({ form, update }: StepProps) {
           placeholder="напр. Скоротила витрати на 15%, провела 200+ уроків, впровадила нову систему обліку..."
           rows={3}
         />
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-muted mt-1">
           Якщо є цифри — чудово. Але можна й без них.
         </p>
       </div>
@@ -422,9 +455,9 @@ function Step4({ form, update }: StepProps) {
             type="checkbox"
             checked={form.diploma_recognized}
             onChange={(e) => update('diploma_recognized', e.target.checked)}
-            className="w-4 h-4 rounded border-slate-300 text-blue-600"
+            className="w-4 h-4 rounded border-ink/10 text-forest"
           />
-          <span className="text-sm text-slate-700">
+          <span className="text-sm text-ink">
             Мій диплом вже визнано в Бельгії (NARIC)
           </span>
         </label>
@@ -459,19 +492,19 @@ function Step5({ form, update }: StepProps) {
         <button
           type="button"
           onClick={() => setShowGuide(!showGuide)}
-          className="text-xs text-blue-600 underline underline-offset-2"
+          className="text-xs text-forest underline underline-offset-2"
         >
           {showGuide ? '▲ Сховати' : '▼ Як визначити свій рівень?'}
         </button>
         {showGuide && (
-          <div className="mt-2 bg-blue-50 rounded-xl p-3 text-xs text-slate-700 space-y-1">
-            <p className="font-semibold text-slate-600 mb-2">Шкала CEFR (міжнародний стандарт):</p>
+          <div className="mt-2 bg-sage-light/30 rounded-xl p-3 text-xs text-ink space-y-1">
+            <p className="font-semibold text-ink-soft mb-2">Шкала CEFR (міжнародний стандарт):</p>
             <p><span className="font-medium">A1</span> — розумію окремі слова, можу представитися</p>
             <p><span className="font-medium">A2</span> — розумію прості речення, базове спілкування</p>
             <p><span className="font-medium">B1</span> — можу спілкуватися на знайомі теми, розумію повільну мову</p>
             <p><span className="font-medium">B2</span> — впевнено спілкуюся, розумію більшість текстів</p>
             <p><span className="font-medium">C1</span> — вільно висловлююся, майже як носій</p>
-            <p><span className="font-medium text-blue-700">C2</span> — <span className="text-blue-700">рідна мова або повне володіння (наприклад: українська, російська)</span></p>
+            <p><span className="font-medium text-forest">C2</span> — <span className="text-forest">рідна мова або повне володіння (наприклад: українська, російська)</span></p>
           </div>
         )}
       </div>
@@ -505,7 +538,7 @@ function Step5({ form, update }: StepProps) {
             onChange={(v) => update('other_languages', v)}
             placeholder="напр. Українська C2, Російська C2, Польська B1"
           />
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-muted mt-1">
             Рідна мова = C2. Вкажіть українську та інші мови, якими володієте
           </p>
         </div>
@@ -530,7 +563,7 @@ function Step6({ form, update }: StepProps) {
           onChange={(v) => update('target_job_title', v)}
           placeholder="напр. Boekhouder, HR-medewerker, Verpleegkundige"
         />
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-muted mt-1">
           Якщо не знаєте — ми підберемо самі на основі вашого досвіду
         </p>
       </div>
@@ -543,7 +576,7 @@ function Step6({ form, update }: StepProps) {
           placeholder="Вставте текст конкретної вакансії з VDAB або іншого сайту — і ми адаптуємо CV саме під неї"
           rows={6}
         />
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-muted mt-1">
           Якщо є конкретна вакансія — ATS-ключові слова з неї будуть вбудовані у ваш CV
         </p>
       </div>
@@ -567,7 +600,7 @@ function Step7({ form, update }: StepProps) {
           onChange={(v) => update('full_name', v)}
           placeholder="напр. Olena Kovalenko"
         />
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-muted mt-1">
           Латинськими літерами, як у посвідці на проживання або закордонному паспорті — саме так ваше ім&apos;я буде у CV
         </p>
       </div>
@@ -580,18 +613,18 @@ function Step7({ form, update }: StepProps) {
           onChange={(v) => update('email', v)}
           placeholder="ваш@email.com"
         />
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-muted mt-1">
           На цю адресу прийде лист з CV та матеріалами
         </p>
       </div>
 
       {/* Price summary */}
-      <div className="bg-slate-50 rounded-xl p-4 mb-2">
+      <div className="bg-cream-2/50 rounded-xl p-4 mb-2">
         <div className="flex justify-between items-center mb-3">
-          <span className="font-semibold text-slate-700">Ваш пакет</span>
-          <span className="text-2xl font-bold text-blue-600">€9</span>
+          <span className="font-semibold text-ink">Ваш пакет</span>
+          <span className="text-2xl font-bold text-forest">€9</span>
         </div>
-        <ul className="space-y-1.5 text-sm text-slate-600">
+        <ul className="space-y-1.5 text-sm text-ink-soft">
           {[
             '✓ CV на нідерландській / французькій',
             '✓ Мотиваційний лист',
@@ -603,7 +636,7 @@ function Step7({ form, update }: StepProps) {
         </ul>
       </div>
 
-      <p className="text-xs text-slate-400 text-center">
+      <p className="text-xs text-muted text-center">
         Оплата через Stripe · Bancontact, Visa, Mastercard · Повернення коштів протягом 24 годин з моменту звернення
       </p>
     </>
