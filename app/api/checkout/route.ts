@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { FormData } from '@/types'
-import { supabaseAdmin } from '@/lib/supabase'
+// import { supabaseAdmin } from '@/lib/supabase' // TEMP disabled
 
 export const dynamic = 'force-dynamic'
 
@@ -64,12 +64,7 @@ export async function POST(req: NextRequest) {
     })
 
     console.log('STEP3: stripe session created:', session.id)
-    // ── 3. Link the Stripe session id back to the order ───────
-    await supabase
-      .from('orders')
-      .update({ stripe_session_id: session.id })
-      .eq('id', order.id)
-
+    // TEMP: skip Supabase update
     return NextResponse.json({ url: session.url, order_id: order.id })
   } catch (error) {
     console.error('Stripe checkout error:', error)
