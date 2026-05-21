@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { generateCVPackage } from '@/lib/claude'
+import { generateCVAndProfessions, generateMotivationLetter } from '@/lib/claude'
 import { generateCVDocx, generateMotivationLetterDocx } from '@/lib/docx-generator'
 import { sendCVPackage } from '@/lib/email'
 import { getMappingById } from '@/lib/mappings'
@@ -26,18 +26,24 @@ export async function POST(req: NextRequest) {
     }
     console.log(`[generate] ${elapsed()} — mapping OK`)
 
-    // 2. Claude API — generates CV + motivation letter + profession list
-    console.log(`[generate] ${elapsed()} — calling Claude...`)
-    let cv, motivationLetter, professionList
+    // 2. Two parallel Claude calls:
+    //    - Sonnet: full CV + profession list (quality matters, ~3000 tokens)
+    //    - Haiku:  motivation letter (fast, simple, ~400 tokens)
+    console.log(`[generate] ${elapsed()} — calling Claude (Sonnet+Haiku parallel)...`)
+    let cvResult, motivationLetter
     try {
-      ;({ cv, motivationLetter, professionList } = await generateCVPackage(formData, mapping))
+      ;[cvResult, motivationLetter] = await Promise.all([
+        generateCVAndProfessions(formData, mapping),
+        generateMotivationLetter(formData, mapping),
+      ])
     } catch (err) {
       console.error(`[generate] ${elapsed()} — Claude FAILED:`, err)
       throw err
     }
-    console.log(`[generate] ${elapsed()} — Claude OK`)
+    const { cv, professionList } = cvResult
+    console.log(`[generate] ${elapsed()} — Claude OK (both)`)
 
-    // 3. Generate both DOCX files in parallel (they're independent)
+    // 3. Both DOCX in parallel — they're independent
     console.log(`[generate] ${elapsed()} — generating DOCX files (parallel)...`)
     let cvDocxBuffer: Buffer
     let motivationDocxBuffer: Buffer
@@ -47,7 +53,7 @@ export async function POST(req: NextRequest) {
         generateMotivationLetterDocx(motivationLetter, formData.full_name),
       ])
     } catch (err) {
-      console.error(`[generate] ${elapsed()} — DOCX generation FAILED:`, err)
+      console.error(`[generate] ${elapsed()} — DOCX FAILED:`, err)
       throw err
     }
     console.log(
@@ -62,7 +68,7 @@ export async function POST(req: NextRequest) {
       console.error(`[generate] ${elapsed()} — Email FAILED:`, err)
       throw err
     }
-    console.log(`[generate] ${elapsed()} — email sent. DONE.`)
+    console.log(`[generate] ${elapsed()} — DONE`)
 
     return NextResponse.json({ success: true })
   } catch (error) {
