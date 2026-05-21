@@ -56,7 +56,13 @@ export async function generateCVPackage(
     ],
   })
 
-  const responseText = message.content[0].type === 'text' ? message.content[0].text : ''
+  const rawText = message.content[0].type === 'text' ? message.content[0].text : ''
+
+  // Strip markdown code blocks if Claude wrapped the JSON (e.g. ```json\n...\n```)
+  const responseText = rawText
+    .replace(/^```(?:json)?\s*\n?/i, '')
+    .replace(/\n?```\s*$/i, '')
+    .trim()
 
   // Parse the JSON response
   const parsed = JSON.parse(responseText)
