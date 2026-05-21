@@ -1,36 +1,171 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AISTA — CV Builder для українок у Бельгії
 
-## Getting Started
+> "Твій досвід — мовою бельгійського роботодавця"
 
-First, run the development server:
+Онлайн-сервіс, який допомагає українкам у Бельгії перетворити свій досвід в бельгійське CV, зрозуміле роботодавцям.
+
+**Лендінг:** https://stnatalia.github.io/aista-landing/
+**App (цей репо):** https://github.com/StNatalia/aista-app
+
+---
+
+## Що це за продукт
+
+Клієнтка заповнює 7-крокову анкету → оплачує €9 → отримує на email:
+- CV на нідерландській (або французькій/англійській) у форматі DOCX
+- Мотиваційний лист
+- Список посад для пошуку
+- 4 PDF-уроки нідерландської для співбесіди
+
+Ключова фіча: **переклад українських посад у бельгійський еквівалент** — не просто мовний переклад, а точна адаптація рівня посади і стилю опису досвіду.
+
+---
+
+## Стек
+
+| Компонент | Технологія |
+|---|---|
+| Framework | Next.js 16 (App Router, TypeScript) |
+| Стилі | Tailwind CSS |
+| AI генерація | Claude API (claude-sonnet-4-5) |
+| DOCX | `docx` npm package |
+| Оплата | Stripe Checkout |
+| Email | Resend |
+| Хостинг | Vercel |
+| База маппінгів | JSON файли (data/mappings/) |
+
+---
+
+## Структура проекту
+
+```
+aista-app/
+├── app/
+│   ├── form/page.tsx          # 7-крокова анкета (головна сторінка продукту)
+│   ├── success/page.tsx       # Сторінка після оплати
+│   └── api/
+│       ├── checkout/route.ts  # Створення Stripe Checkout сесії
+│       ├── generate/route.ts  # Генерація CV через Claude API
+│       └── webhook/route.ts   # Stripe webhook → тригер генерації
+├── lib/
+│   ├── claude.ts              # Промпти та виклик Claude API
+│   ├── docx-generator.ts      # Генерація DOCX документу
+│   ├── email.ts               # Відправка email через Resend
+│   └── mappings.ts            # Завантаження даних маппінгів
+├── data/mappings/             # JSON файли з маппінгами професій
+│   ├── accountant.json        # Бухгалтер / економіст / фінаналітик
+│   ├── teacher.json           # Вчитель / педагог / методист
+│   ├── office-manager.json    # Офіс-менеджер / HR / адміністратор
+│   └── nurse.json             # Медсестра / лікар
+├── types/index.ts             # TypeScript типи
+└── public/lessons/            # 4 PDF уроки нідерландської
+```
+
+---
+
+## Швидкий старт
+
+### 1. Клонувати та встановити
+
+```bash
+git clone https://github.com/StNatalia/aista-app.git
+cd aista-app
+npm install
+```
+
+### 2. Змінні середовища
+
+Створи `.env.local`:
+
+```env
+ANTHROPIC_API_KEY=sk-ant-...
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+RESEND_API_KEY=re_...
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+```
+
+### 3. PDF уроки
+
+Поклади 4 файли в `public/lessons/`:
+```
+les-01-vacatures-lezen.pdf
+les-02-cv-schrijven.pdf
+les-03-sollicitatiebrief.pdf
+les-04-woordenlijst.pdf
+```
+
+### 4. Запуск
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# http://localhost:3000/form
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## API ключі
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Сервіс | Де взяти | Вартість |
+|---|---|---|
+| Anthropic | console.anthropic.com | ~€0.025 за 1 CV |
+| Stripe | stripe.com → Developers → API keys | 1.5% + €0.25 / транзакція |
+| Resend | resend.com | Безкоштовно до 3000 листів/міс |
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Stripe webhook (локально)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+stripe listen --forward-to localhost:3000/api/webhook
+```
+Скопіюй `whsec_...` з консолі в `.env.local`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Дані маппінгів
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Кожен JSON у `data/mappings/` містить:
+- `uk_title_variants` — варіанти назви посади українською
+- `survival_track` — бельгійський еквівалент для швидкого пошуку роботи
+- `professional_track` — бельгійський еквівалент для повернення до професії
+- `experience_transforms` — приклади трансформації опису досвіду
+- `ats_keywords_nl/fr` — ключові слова для ATS
+- `recognition_info` — NARIC, RIZIV та інші процедури визнання
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Готово (Priority 1):** accountant, teacher, office-manager, nurse
+
+**TODO (Priority 2):** engineer, doctor-pharmacist, it-developer
+
+**TODO (Priority 3):** lawyer, psychologist, architect, logistics
+
+---
+
+## Деплой на Vercel
+
+```bash
+npm i -g vercel
+vercel
+```
+
+Після деплою:
+1. Оновити `NEXT_PUBLIC_BASE_URL` на реальний URL
+2. Налаштувати Stripe webhook на production endpoint
+3. Верифікувати домен у Resend
+
+---
+
+## TODO
+
+- [ ] Додати маппінги Priority 2 (engineer, doctor, IT)
+- [ ] Підключити Stripe production (після реєстрації ЧП)
+- [ ] Купити домен aista.be і верифікувати в Resend
+- [ ] Французька версія CV
+- [ ] Сторінка /admin для перегляду замовлень
+- [ ] Мотиваційний лист як окремий DOCX файл
+
+---
+
+## Контакти
+
+Власник: Nataliia Stasiuk · nataliia.stasiuk.be@gmail.com · @StNatalia
