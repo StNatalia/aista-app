@@ -27,8 +27,8 @@ export async function POST(req: NextRequest) {
     // 3. Generate DOCX file
     const cvDocxBuffer = await generateCVDocx(cv)
 
-    // 4. Send email with DOCX + PDF lessons
-    await sendCVPackage({ formData, cvDocxBuffer, professionList })
+    // 4. Send email with DOCX + PDF lessons + motivation letter
+    await sendCVPackage({ formData, cvDocxBuffer, professionList, motivationLetter })
 
     return NextResponse.json({ success: true })
   } catch (error) {

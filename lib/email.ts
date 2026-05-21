@@ -1,5 +1,5 @@
 import { Resend } from 'resend'
-import { FormData, GeneratedProfessionList } from '@/types'
+import { FormData, GeneratedProfessionList, GeneratedMotivationLetter } from '@/types'
 import path from 'path'
 import fs from 'fs'
 
@@ -16,10 +16,12 @@ export async function sendCVPackage({
   formData,
   cvDocxBuffer,
   professionList,
+  motivationLetter,
 }: {
   formData: FormData
   cvDocxBuffer: Buffer
   professionList: GeneratedProfessionList
+  motivationLetter: GeneratedMotivationLetter
 }): Promise<void> {
   // Load the 4 Dutch lesson PDFs from public folder
   const lessonPaths = [
@@ -62,7 +64,7 @@ export async function sendCVPackage({
     from: 'AISTA CV Builder <onboarding@resend.dev>',
     to: formData.email,
     subject: `Ваш CV готовий, ${formData.full_name.split(' ')[0]}! 🎉`,
-    html: buildEmailHtml(formData, professionListHtml),
+    html: buildEmailHtml(formData, professionListHtml, motivationLetter),
     attachments,
   })
 }
@@ -70,7 +72,7 @@ export async function sendCVPackage({
 // ============================================================
 // Email HTML template
 // ============================================================
-function buildEmailHtml(formData: FormData, professionListHtml: string): string {
+function buildEmailHtml(formData: FormData, professionListHtml: string, motivationLetter: GeneratedMotivationLetter): string {
   const firstName = formData.full_name.split(' ')[0]
   const regionLabel =
     formData.region === 'flanders'
@@ -117,15 +119,27 @@ function buildEmailHtml(formData: FormData, professionListHtml: string): string 
     </div>
 
     <div class="section">
+      <h2>✉️ Мотиваційний лист (шаблон)</h2>
+      <p style="font-size:13px;color:#555;margin:0 0 10px">Скопіюйте і адаптуйте під конкретну вакансію:</p>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:14px;font-size:13px;line-height:1.7;white-space:pre-line">${motivationLetter.opening}
+
+${motivationLetter.why_this_role}
+
+${motivationLetter.what_i_bring}
+
+${motivationLetter.closing}</div>
+    </div>
+
+    <div class="section">
       <h2>💼 Посади, на які можна подаватися</h2>
       <ul>${professionListHtml}</ul>
     </div>
 
     <div class="tip">
       <strong>💡 Порада:</strong> Перед відправкою CV перевірте:<br/>
-      ✓ Ім'я файлу: "Prізвище_Ім'я_CV.docx"<br/>
       ✓ Відправляйте DOCX (не PDF) — це стандарт у Бельгії<br/>
-      ✓ Напишіть короткий мотиваційний лист — шаблон ви знайдете всередині документа
+      ✓ Адаптуйте мотиваційний лист під кожну вакансію<br/>
+      ✓ Ім'я файлу: "Прізвище_Ім'я_CV.docx"
     </div>
   </div>
   <div class="footer">
