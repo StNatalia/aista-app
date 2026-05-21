@@ -1,5 +1,5 @@
 import { Resend } from 'resend'
-import { FormData, GeneratedProfessionList, GeneratedMotivationLetter } from '@/types'
+import { FormData, GeneratedProfessionList } from '@/types'
 import path from 'path'
 import fs from 'fs'
 
@@ -15,13 +15,13 @@ function getResend() {
 export async function sendCVPackage({
   formData,
   cvDocxBuffer,
+  motivationDocxBuffer,
   professionList,
-  motivationLetter,
 }: {
   formData: FormData
   cvDocxBuffer: Buffer
+  motivationDocxBuffer: Buffer
   professionList: GeneratedProfessionList
-  motivationLetter: GeneratedMotivationLetter
 }): Promise<void> {
   // Load the 4 Dutch lesson PDFs from public folder
   const lessonPaths = [
@@ -44,10 +44,15 @@ export async function sendCVPackage({
     .join('')
 
   // Build attachments: CV DOCX + lesson PDFs (if they exist)
+  const nameSlug = formData.full_name.replace(/\s+/g, '_')
   const attachments: { filename: string; content: Buffer }[] = [
     {
-      filename: `CV_${formData.full_name.replace(/\s+/g, '_')}_AISTA.docx`,
+      filename: `CV_${nameSlug}_AISTA.docx`,
       content: cvDocxBuffer,
+    },
+    {
+      filename: `Motivatiebrief_${nameSlug}_AISTA.docx`,
+      content: motivationDocxBuffer,
     },
   ]
 
@@ -64,7 +69,7 @@ export async function sendCVPackage({
     from: 'AISTA CV Builder <onboarding@resend.dev>',
     to: formData.email,
     subject: `Ваш CV готовий, ${formData.full_name.split(' ')[0]}! 🎉`,
-    html: buildEmailHtml(formData, professionListHtml, motivationLetter),
+    html: buildEmailHtml(formData, professionListHtml),
     attachments,
   })
 }
@@ -72,7 +77,7 @@ export async function sendCVPackage({
 // ============================================================
 // Email HTML template
 // ============================================================
-function buildEmailHtml(formData: FormData, professionListHtml: string, motivationLetter: GeneratedMotivationLetter): string {
+function buildEmailHtml(formData: FormData, professionListHtml: string): string {
   const firstName = formData.full_name.split(' ')[0]
   const regionLabel =
     formData.region === 'flanders'
@@ -113,21 +118,10 @@ function buildEmailHtml(formData: FormData, professionListHtml: string, motivati
     <div class="section">
       <h2>📎 Що у вкладеннях</h2>
       <ul>
-        <li><strong>CV_${formData.full_name.replace(/\s+/g, '_')}_AISTA.docx</strong> — ваше CV, готове до відправки</li>
-        <li><strong>4 уроки нідерландської</strong> — PDF-файли для підготовки до співбесіди</li>
+        <li>📄 <strong>CV_${formData.full_name.replace(/\s+/g, '_')}_AISTA.docx</strong> — CV, готове до відправки</li>
+        <li>✉️ <strong>Motivatiebrief_${formData.full_name.replace(/\s+/g, '_')}_AISTA.docx</strong> — мотиваційний лист (адаптуйте під кожну вакансію)</li>
+        <li>📚 <strong>4 уроки нідерландської</strong> — PDF-файли для підготовки до співбесіди</li>
       </ul>
-    </div>
-
-    <div class="section">
-      <h2>✉️ Мотиваційний лист (шаблон)</h2>
-      <p style="font-size:13px;color:#555;margin:0 0 10px">Скопіюйте і адаптуйте під конкретну вакансію:</p>
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:14px;font-size:13px;line-height:1.7;white-space:pre-line">${motivationLetter.opening}
-
-${motivationLetter.why_this_role}
-
-${motivationLetter.what_i_bring}
-
-${motivationLetter.closing}</div>
     </div>
 
     <div class="section">

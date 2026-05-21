@@ -13,7 +13,7 @@ import {
   ShadingType,
   convertInchesToTwip,
 } from 'docx'
-import { GeneratedCV } from '@/types'
+import { GeneratedCV, GeneratedMotivationLetter } from '@/types'
 
 // ============================================================
 // Belgian CV color palette
@@ -287,4 +287,75 @@ function buildLanguagesBlock(languages: GeneratedCV['languages']): Paragraph {
     ]),
     spacing: { after: 200 },
   })
+}
+
+// ============================================================
+// MOTIVATION LETTER DOCX
+// ============================================================
+export async function generateMotivationLetterDocx(
+  motivationLetter: GeneratedMotivationLetter,
+  candidateName: string
+): Promise<Buffer> {
+  const bodySpacing = { spacing: { after: 240, line: 276 } }
+
+  const doc = new Document({
+    styles: {
+      default: {
+        document: { run: { font: 'Calibri', size: 22, color: COLORS.text } },
+      },
+    },
+    sections: [
+      {
+        properties: {
+          page: {
+            margin: {
+              top: convertInchesToTwip(1.0),
+              bottom: convertInchesToTwip(1.0),
+              left: convertInchesToTwip(1.2),
+              right: convertInchesToTwip(1.2),
+            },
+          },
+        },
+        children: [
+          // Candidate name header
+          new Paragraph({
+            children: [
+              new TextRun({ text: candidateName, bold: true, size: 28, color: COLORS.primary, font: 'Calibri' }),
+            ],
+            spacing: { after: 80 },
+          }),
+          // Divider
+          new Paragraph({
+            border: { bottom: { color: COLORS.accent, size: 6, style: BorderStyle.SINGLE } },
+            spacing: { after: 320 },
+            children: [],
+          }),
+          // 4 paragraphs of the letter
+          new Paragraph({
+            children: [new TextRun({ text: motivationLetter.opening, font: 'Calibri', size: 22 })],
+            ...bodySpacing,
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: motivationLetter.why_this_role, font: 'Calibri', size: 22 })],
+            ...bodySpacing,
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: motivationLetter.what_i_bring, font: 'Calibri', size: 22 })],
+            ...bodySpacing,
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: motivationLetter.closing, font: 'Calibri', size: 22 })],
+            spacing: { after: 560 },
+          }),
+          // Signature
+          new Paragraph({
+            children: [new TextRun({ text: candidateName, bold: true, font: 'Calibri', size: 22 })],
+            spacing: { after: 0 },
+          }),
+        ],
+      },
+    ],
+  })
+
+  return Buffer.from(await Packer.toBuffer(doc))
 }

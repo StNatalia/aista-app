@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { generateCVPackage } from '@/lib/claude'
-import { generateCVDocx } from '@/lib/docx-generator'
+import { generateCVDocx, generateMotivationLetterDocx } from '@/lib/docx-generator'
 import { sendCVPackage } from '@/lib/email'
 import { getMappingById } from '@/lib/mappings'
 import { FormData } from '@/types'
@@ -24,11 +24,12 @@ export async function POST(req: NextRequest) {
     // 2. Generate CV content via Claude API
     const { cv, motivationLetter, professionList } = await generateCVPackage(formData, mapping)
 
-    // 3. Generate DOCX file
+    // 3. Generate DOCX files
     const cvDocxBuffer = await generateCVDocx(cv)
+    const motivationDocxBuffer = await generateMotivationLetterDocx(motivationLetter, formData.full_name)
 
-    // 4. Send email with DOCX + PDF lessons + motivation letter
-    await sendCVPackage({ formData, cvDocxBuffer, professionList, motivationLetter })
+    // 4. Send email with DOCX files + PDF lessons
+    await sendCVPackage({ formData, cvDocxBuffer, motivationDocxBuffer, professionList })
 
     return NextResponse.json({ success: true })
   } catch (error) {
