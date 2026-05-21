@@ -67,7 +67,10 @@ export async function POST(req: NextRequest) {
     .eq('id', orderId)
 
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+    // Use VERCEL_URL (system env, always ASCII) instead of NEXT_PUBLIC_BASE_URL
+    const baseUrl = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'https://aista-app.vercel.app'
     const response = await fetch(`${baseUrl}/api/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
