@@ -139,7 +139,7 @@ ${motivationLetter.closing}</div>
       <strong>💡 Порада:</strong> Перед відправкою CV перевірте:<br/>
       ✓ Відправляйте DOCX (не PDF) — це стандарт у Бельгії<br/>
       ✓ Адаптуйте мотиваційний лист під кожну вакансію<br/>
-      ✓ Ім'я файлу: "Прізвище_Ім'я_CV.docx"
+      ✓ Назва файлу: <strong>${formData.full_name.replace(/\s+/g, '_')}_CV.docx</strong>
     </div>
   </div>
   <div class="footer">
