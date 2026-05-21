@@ -31,6 +31,8 @@ export async function POST(req: NextRequest) {
     }
 
     console.log('STEP1: starting supabase insert')
+    const sbUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
+    console.log('STEP1a: sbUrl len', sbUrl.length, 'codes', sbUrl.split('').map((c: string) => c.charCodeAt(0)).join(','))
     // ── 1. Create order row in Supabase ───────────────────────
     const supabase = supabaseAdmin()
     let order: { id: string } | null = null
