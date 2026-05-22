@@ -76,4 +76,24 @@
   .btn-press:active {
     transform: translateY(1px);
   }
+
+  .btn-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 35%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.22), transparent);
+    animation: shimmer 3s ease-in-out infinite;
+  }
+}
+
+@keyframes shimmer {
+  0%   { transform: translateX(-200%) skewX(-20deg); }
+  100% { transform: translateX(500%) skewX(-20deg); }
 }
