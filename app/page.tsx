@@ -23,6 +23,8 @@ import {
   FAQItem,
 } from "./_components/motion";
 import { TestimonialsCarousel } from "./_components/carousel";
+import { ATSScanner } from "./_components/ats-scanner";
+import { ProcessSteps } from "./_components/process-steps";
 
 const CTA_HREF = "/form";
 
@@ -36,6 +38,7 @@ export default function Home() {
         <Hero />
         <SocialProofBar />
         <Problem />
+        <ATSScannerSection />
         <Situations />
         <HowItWorks />
         <Bundle />
@@ -290,6 +293,26 @@ const PROBLEMS = [
   },
 ];
 
+/* ──────────────────────────────────────────────── ATS SCANNER DEMO */
+function ATSScannerSection() {
+  return (
+    <section className="mx-auto max-w-4xl px-5 sm:px-8 pb-16 sm:pb-24">
+      <FadeIn>
+        <div className="text-center mb-8">
+          <span className="text-xs uppercase tracking-[0.18em] text-sage-dark font-medium">
+            Живе демо
+          </span>
+          <h2 className="mt-2 font-display text-2xl sm:text-3xl leading-tight">
+            Ось як ATS бачить твоє резюме —{" "}
+            <span className="text-clay italic">до і після</span>
+          </h2>
+        </div>
+      </FadeIn>
+      <ATSScanner />
+    </section>
+  );
+}
+
 /* ──────────────────────────────────────────────── SITUATIONS — впізнаєш себе */
 function Situations() {
   return (
@@ -366,19 +389,7 @@ function HowItWorks() {
           </h2>
         </FadeIn>
 
-        <StaggerChildren className="mt-14 grid md:grid-cols-3 gap-8 sm:gap-12">
-          {STEPS.map((s, i) => (
-            <StaggerItem key={s.title}>
-              <div className="relative">
-                <div className="font-display text-6xl text-sage-light/30 leading-none">
-                  0{i + 1}
-                </div>
-                <h3 className="mt-3 font-display text-2xl">{s.title}</h3>
-                <p className="mt-3 text-cream/75 leading-relaxed">{s.body}</p>
-              </div>
-            </StaggerItem>
-          ))}
-        </StaggerChildren>
+        <ProcessSteps />
 
         <FadeIn delay={0.2}>
           <div className="mt-16 rounded-3xl overflow-hidden ring-1 ring-cream/10 bg-cream/5 grid md:grid-cols-[1.1fr_1fr]">
@@ -419,20 +430,6 @@ function HowItWorks() {
   );
 }
 
-const STEPS = [
-  {
-    title: "Розкажи про себе",
-    body: "Завантажуєш резюме або заповнюєш коротку форму рідною мовою. Вставляєш посилання на вакансію — AI врахує ключові слова.",
-  },
-  {
-    title: "AI адаптує під ринок Бельгії",
-    body: "Claude Sonnet знаходить твій справжній рівень і перекладає не слова, а кар'єру. Твій «Бухгалтер» стає «Financieel coördinator».",
-  },
-  {
-    title: "Отримуєш документи і підбірку вакансій",
-    body: "CV у DOCX, мотиваційний лист, актуальні вакансії і 3 уроки нідерландської для співбесіди — усе одним листом за 15 хвилин.",
-  },
-];
 
 /* ──────────────────────────────────────────────── BUNDLE */
 function Bundle() {
