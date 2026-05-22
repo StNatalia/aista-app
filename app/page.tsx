@@ -25,6 +25,7 @@ const CTA_HREF = "/form";
 export default function Home() {
   return (
     <>
+      <AnnounceBanner />
       <Header />
       <main className="flex-1">
         <Hero />
@@ -34,12 +35,25 @@ export default function Home() {
         <Bundle />
         <Testimonials />
         <Why />
+        <Author />
         <FAQ />
         <FinalCTA />
       </main>
       <Footer />
       <MobileStickyCTA />
     </>
+  );
+}
+
+/* ──────────────────────────────────────────────── ANNOUNCE BANNER */
+function AnnounceBanner() {
+  return (
+    <div className="bg-forest text-cream text-xs sm:text-sm text-center py-2.5 px-4 font-medium">
+      🇺🇦 Онлайн-сервіс для українців у Бельгії —{" "}
+      <span className="text-clay-soft font-semibold">
+        Акційна ціна: 9 € замість 45 €
+      </span>
+    </div>
   );
 }
 
@@ -53,10 +67,18 @@ function Header() {
           <span className="font-display text-xl tracking-tight">AISTA</span>
         </Link>
         <nav className="hidden md:flex items-center gap-7 text-sm text-ink-soft">
-          <a href="#how" className="hover:text-ink transition">Як працює</a>
-          <a href="#bundle" className="hover:text-ink transition">Що отримаєш</a>
-          <a href="#stories" className="hover:text-ink transition">Історії</a>
-          <a href="#faq" className="hover:text-ink transition">FAQ</a>
+          <a href="#how" className="hover:text-ink transition">
+            Як працює
+          </a>
+          <a href="#bundle" className="hover:text-ink transition">
+            Що отримаєш
+          </a>
+          <a href="#stories" className="hover:text-ink transition">
+            Історії
+          </a>
+          <a href="#faq" className="hover:text-ink transition">
+            FAQ
+          </a>
         </nav>
         <Link
           href={CTA_HREF}
@@ -89,15 +111,14 @@ function Hero() {
           </div>
 
           <h1 className="font-display text-[2.4rem] sm:text-5xl lg:text-[3.6rem] leading-[1.05] tracking-tight text-ink">
-            Твоє резюме —{" "}
-            <span className="text-sage-dark italic">мовою бельгійського</span>{" "}
-            роботодавця
+            Відправляєш десятки заявок —{" "}
+            <span className="text-clay italic">і отримуєш тишу?</span>
           </h1>
 
           <p className="mt-6 text-lg text-ink-soft max-w-xl leading-relaxed">
-            AI адаптує твій український досвід під ATS-фільтри Бельгії. CV
-            нідерландською або французькою, мотиваційний лист і список
-            вакансій — на email за 15 хвилин.
+            За <strong className="text-ink">15 хвилин</strong> отримаєш резюме
+            нідерландською потрібного формату, де твій досвід нарешті звучить
+            зрозуміло і доходить до рук і мізків живого рекрутера у Бельгії.
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
@@ -105,14 +126,14 @@ function Hero() {
               href={CTA_HREF}
               className="btn-press group inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream px-6 py-4 text-base font-semibold hover:bg-sage-dark shadow-lg shadow-forest/15"
             >
-              Створити моє CV за €9
+              Нарешті бути побаченою як спеціаліст — €9
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
-            <span className="inline-flex items-center gap-2 text-sm text-muted">
-              <ShieldCheck className="size-4 text-sage" />
-              Повернення коштів протягом 24 годин
-            </span>
           </div>
+          <span className="mt-3 inline-flex items-center gap-2 text-sm text-muted">
+            <ShieldCheck className="size-4 text-sage" />
+            Гарантія 7 днів — одне повідомлення і гроші повертаються
+          </span>
 
           <div className="mt-10 grid grid-cols-3 gap-4 max-w-md">
             <Stat n="15хв" l="готове CV" />
@@ -144,7 +165,7 @@ function Hero() {
             <FloatingCard
               className="-right-3 sm:-right-6 bottom-8"
               icon={<Star className="size-4 fill-clay text-clay" />}
-              text="4.9 · 312 відгуків"
+              text="Перша відповідь на 8-й день"
             />
           </div>
         </FadeIn>
@@ -186,10 +207,10 @@ function SocialProofBar() {
   return (
     <section className="border-y border-ink/5 bg-cream-2/50">
       <div className="mx-auto max-w-6xl px-5 sm:px-8 py-6 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-4 text-center sm:text-left">
-        <ProofItem big="47%" small="українок у VDAB з вищою освітою" />
-        <ProofItem big="99%" small="не проходять ATS-фільтри без адаптації" />
-        <ProofItem big="DOCX" small="стандарт бельгійського ринку" />
-        <ProofItem big="NL / FR / EN" small="три мови на вибір" />
+        <ProofItem big="78→0" small="заявок без єдиної відповіді — типова ситуація" />
+        <ProofItem big="6–7 сек" small="рекрутер витрачає на перегляд CV" />
+        <ProofItem big="+53%" small="більше відгуків після адаптації формату" />
+        <ProofItem big="€9 vs €90" small="середня ціна консультанта у Бельгії" />
       </div>
     </section>
   );
@@ -214,19 +235,17 @@ function Problem() {
             Чому твоє CV ігнорують
           </span>
           <h2 className="mt-3 font-display text-3xl sm:text-4xl leading-tight">
-            Це не про твій досвід.{" "}
-            <span className="text-clay italic">Це про переклад.</span>
+            Тиша — це не відмова.{" "}
+            <span className="text-clay italic">Це сигнал.</span>
           </h2>
           <p className="mt-5 text-ink-soft text-lg leading-relaxed">
-            «Бухгалтер» у словнику — «boekhouder». Але це — посада для
-            випускника без досвіду. Твої 8 років насправді — Financieel
-            coördinator. Різниця між мовним перекладом і ринковою адаптацією —
-            це різниця між тишею і запрошенням на співбесіду.
+            Рекрутер витрачає 6–7 секунд на перегляд. Якщо в ці секунди він не
+            бачить потрібних слів — заявка закрита. І ти навіть не дізнаєшся чому.
           </p>
         </div>
       </FadeIn>
 
-      <StaggerChildren className="mt-12 grid sm:grid-cols-3 gap-4 sm:gap-6">
+      <StaggerChildren className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {PROBLEMS.map((p) => (
           <StaggerItem key={p.title}>
             <HoverLift>
@@ -249,19 +268,34 @@ function Problem() {
 
 const PROBLEMS = [
   {
+    icon: <Mail className="size-5" />,
+    title: "78 заявок — 0 відповідей",
+    body: "Витрачаєш понад 3 години на одну заявку. Надсилаєш. Чекаєш. Знову тиша. Це не твоя вина — це фільтр.",
+  },
+  {
     icon: <FileText className="size-5" />,
-    title: "ATS-фільтри",
-    body: "Роботодавець не бачить твоє CV — його відсіює система. Без потрібних NL-ключів воно ніколи не доходить до людини.",
+    title: "Замість фаху — cleaning",
+    body: "Твою кваліфікацію ніби не помічають. Хоча в Україні ти була менеджеркою, бухгалтером, викладачкою.",
+  },
+  {
+    icon: <Clock className="size-5" />,
+    title: "VDAB і OCMW тиснуть",
+    body: "Консультанти вимагають звітів і активності щодня. А результату немає — бо проблема не у кількості заявок.",
   },
   {
     icon: <Globe2 className="size-5" />,
-    title: "Назва посади",
-    body: "Український «головний бухгалтер» бельгійською не означає те ж саме. Дослівний переклад занижує рівень на 2–3 ступені.",
+    title: "Не знаєш, на що подаватися",
+    body: "Як подати те, що вміла в Україні? «Бухгалтер» і «boekhouder» — це різні рівні. І ніхто про це не попереджає.",
   },
   {
     icon: <Sparkles className="size-5" />,
-    title: "Стиль викладу",
-    body: "У Бельгії пишуть результатами: Beheerde, Coördineerde, Realiseerde. У нас — обов'язками. Це різні мови.",
+    title: "Пошук забирає весь час",
+    body: "До 20 годин на тиждень — на вакансії без результату. Сил на роботу, дітей і себе вже не залишається.",
+  },
+  {
+    icon: <Star className="size-5" />,
+    title: "Не знаєш, як пояснити дитині",
+    body: "В Україні ти була керівником. А тут — знову починаєш з нуля. Це боляче. І це несправедливо.",
   },
 ];
 
@@ -275,7 +309,7 @@ function HowItWorks() {
             Як це працює
           </span>
           <h2 className="mt-3 font-display text-3xl sm:text-4xl leading-tight max-w-2xl">
-            Три кроки до CV, яке проходить ATS
+            Три кроки — і резюме у тебе на пошті
           </h2>
         </FadeIn>
 
@@ -304,19 +338,19 @@ function HowItWorks() {
             />
             <div className="p-8 sm:p-10 flex flex-col justify-center">
               <h3 className="font-display text-2xl sm:text-3xl leading-tight">
-                Готове CV — не PDF, а DOCX
+                Готове резюме — у форматі DOCX
               </h3>
               <p className="mt-4 text-cream/75 leading-relaxed">
                 У Бельгії стандарт — DOCX. ATS читає його коректно, а
-                роботодавець може додати нотатки. Ми генеруємо у форматі, який
-                реально працює.
+                роботодавець може додати нотатки. Ми генеруємо у форматі,
+                який реально відкривають і читають.
               </p>
               <ul className="mt-6 space-y-2.5 text-sm text-cream/85">
                 {[
-                  "Bullet-points з дієсловами результату",
-                  "ATS-ключі з конкретної вакансії, якщо ти її вставиш",
-                  "ISCO-08 коди і VDAB-категорії для пошуку",
-                  "Дві версії: survival track + professional track",
+                  "Bullet-points з дієсловами результату (Beheerde, Coördineerde)",
+                  "Назва посади адаптована під рівень бельгійського ринку",
+                  "ATS-ключі під конкретну вакансію, якщо ти її вставиш",
+                  "Два треки: survival (зараз) і professional (після визнання)",
                 ].map((b) => (
                   <li key={b} className="flex gap-2.5">
                     <CheckCircle2 className="size-4 text-sage-light shrink-0 mt-0.5" />
@@ -335,15 +369,15 @@ function HowItWorks() {
 const STEPS = [
   {
     title: "Розкажи про себе",
-    body: "7 кроків анкети українською. Пиши так, як писала б подрузі — без офіційщини. Це безкоштовно.",
+    body: "7 кроків анкети рідною мовою. Пиши як писала б подрузі — без офіційщини. Можеш вставити посилання на вакансію — AI врахує ключові слова.",
   },
   {
-    title: "AI адаптує під ринок",
-    body: "Claude Sonnet перекладає не слова, а рівень посади, стиль і ATS-ключі під Фландрію, Брюссель або Валлонію.",
+    title: "AI адаптує під ринок Бельгії",
+    body: "Claude Sonnet перекладає не слова, а рівень посади. Твій «Бухгалтер» стає «Financieel coördinator». Різниця між перекладом і адаптацією — це запрошення на співбесіду.",
   },
   {
-    title: "Отримай документи на email",
-    body: "CV у DOCX, мотиваційний лист, список посад для пошуку і 4 PDF-уроки нідерландської для співбесіди.",
+    title: "Документи на пошту за 15 хвилин",
+    body: "CV у DOCX, мотиваційний лист, підбірка вакансій і 3 уроки нідерландської «Пошук роботи у Фландрії» — усе одним листом.",
   },
 ];
 
@@ -357,12 +391,12 @@ function Bundle() {
             Що в пакеті
           </span>
           <h2 className="mt-3 font-display text-3xl sm:text-4xl leading-tight">
-            Все, що треба для першого «так» —{" "}
+            €103 бонусів у подарунок —{" "}
             <span className="text-sage-dark italic">за €9</span>
           </h2>
           <p className="mt-5 text-ink-soft text-lg leading-relaxed">
-            Не місячна підписка. Не €45–€100, як у консультантів. Один платіж,
-            повний пакет на email, гарантія повернення.
+            Не місячна підписка. Не €90, як у консультанта. Один платіж — готові
+            документи на email і бонуси загальною вартістю €103.
           </p>
           <ul className="mt-8 space-y-4">
             {BUNDLE_ITEMS.map((b) => (
@@ -371,7 +405,19 @@ function Bundle() {
                   {b.icon}
                 </div>
                 <div>
-                  <div className="font-medium text-ink">{b.title}</div>
+                  <div className="font-medium text-ink flex flex-wrap items-center gap-2">
+                    {b.title}
+                    {b.oldPrice && (
+                      <span className="text-xs text-muted line-through">
+                        {b.oldPrice}
+                      </span>
+                    )}
+                    {b.badge && (
+                      <span className="text-xs bg-sage-light/60 text-sage-dark rounded-full px-2 py-0.5">
+                        {b.badge}
+                      </span>
+                    )}
+                  </div>
                   <div className="text-sm text-muted mt-0.5">{b.desc}</div>
                 </div>
               </li>
@@ -383,7 +429,7 @@ function Bundle() {
           <HoverLift>
             <div className="relative rounded-3xl bg-white p-7 sm:p-9 ring-1 ring-ink/5 card-shadow">
               <div className="absolute -top-3 right-6 inline-flex items-center gap-1.5 rounded-full bg-clay text-cream px-3 py-1 text-xs font-medium">
-                <Sparkles className="size-3" /> Запуск €9
+                <Sparkles className="size-3" /> Акційна ціна
               </div>
 
               <div className="font-display text-lg text-ink-soft">
@@ -401,7 +447,7 @@ function Bundle() {
                 href={CTA_HREF}
                 className="btn-press mt-6 flex items-center justify-center gap-2 rounded-full bg-forest text-cream py-4 text-base font-semibold hover:bg-sage-dark w-full"
               >
-                Створити моє CV
+                Нарешті бути побаченою як спеціаліст
                 <ArrowRight className="size-4" />
               </Link>
 
@@ -413,13 +459,13 @@ function Bundle() {
                   <Clock className="size-3.5" /> 15 хв
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <ShieldCheck className="size-3.5" /> Гарантія
+                  <ShieldCheck className="size-3.5" /> 7 днів
                 </div>
               </div>
 
               <div className="mt-6 border-t border-ink/5 pt-5 text-xs text-muted leading-relaxed">
                 Bancontact · Visa · Mastercard · Apple Pay · Google Pay.
-                Гарантія повернення коштів протягом 24 годин після оплати — без
+                Гарантія повернення коштів протягом 7 днів після оплати — без
                 питань.
               </div>
             </div>
@@ -434,22 +480,30 @@ const BUNDLE_ITEMS = [
   {
     icon: <FileText className="size-4" />,
     title: "CV у форматі DOCX",
-    desc: "Нідерландською, французькою або англійською — твій вибір.",
+    oldPrice: undefined,
+    badge: undefined,
+    desc: "Нідерландською, французькою або англійською — адаптоване під бельгійський ринок.",
   },
   {
     icon: <Mail className="size-4" />,
-    title: "Мотиваційний лист",
-    desc: "Шаблон, який ти адаптуєш під кожну вакансію за 3 хвилини.",
+    title: "Мотиваційний лист під вакансію",
+    oldPrice: "€20",
+    badge: "безкоштовно",
+    desc: "Під конкретну посаду — не шаблон, а адаптований текст.",
   },
   {
     icon: <Globe2 className="size-4" />,
-    title: "Список посад для пошуку",
-    desc: "Які саме назви шукати на VDAB і Indeed — з кодами ISCO.",
+    title: "Підбірка актуальних вакансій",
+    oldPrice: "€15",
+    badge: "безкоштовно",
+    desc: "Які назви шукати на VDAB та Indeed — з кодами ISCO і VDAB-категоріями.",
   },
   {
     icon: <Sparkles className="size-4" />,
-    title: "4 PDF-уроки нідерландської",
-    desc: "Як читати вакансії, писати CV і відповідати на співбесіді.",
+    title: "3 уроки нідерландської",
+    oldPrice: "€45",
+    badge: "безкоштовно",
+    desc: "«Пошук роботи у Фландрії» — як читати вакансії, писати CV і відповідати на співбесіді.",
   },
 ];
 
@@ -465,7 +519,7 @@ function Testimonials() {
                 Історії
               </span>
               <h2 className="mt-3 font-display text-3xl sm:text-4xl leading-tight">
-                Перший «так» — на 8-й день
+                Перша відповідь — на 8-й день
               </h2>
             </div>
             <div className="flex items-center gap-1.5 text-sm text-ink-soft">
@@ -479,7 +533,7 @@ function Testimonials() {
                 ))}
               </div>
               <span className="font-medium">4.9</span>
-              <span className="text-muted">· 312 відгуків</span>
+              <span className="text-muted">· 100+ резюме</span>
             </div>
           </div>
         </FadeIn>
@@ -522,19 +576,19 @@ function Testimonials() {
 
 const TESTIMONIALS = [
   {
-    name: "Олена",
-    role: "Бухгалтер · Гент",
-    body: "Місяцями розсилала CV — нуль відповідей. Через AISTA на 8-й день — два запрошення на співбесіду. Виявилось, я весь час шукала boekhouder, а мені треба financieel coördinator.",
-  },
-  {
     name: "Тетяна",
-    role: "Вчителька → HR · Антверпен",
-    body: "Я думала, що моя педагогічна освіта тут нікому не потрібна. AISTA показала, як перевести 12 років викладання у мову HR. Працюю helpdesk у школі — крок до того, що хочу.",
+    role: "Брюгге · UA: Бухгалтер → BE: Payroll Officer",
+    body: "Раніше за місяць розсилок я не отримала жодної відповіді. Але після AISTA — перше запрошення на 8-й день.",
   },
   {
-    name: "Наталя",
-    role: "Медсестра · Брюссель",
-    body: "У них окремо survival track — куди йти зараз, поки RIZIV не визнав диплом, і professional track — на потім. Я не знала, що так можна. Зараз zorgkundige, через рік буду verpleegkundige.",
+    name: "Оксана",
+    role: "Гент · UA: Економіст → BE: Business Controller",
+    body: "Економлю від 8 до 15 годин на тиждень, тому що не потрібно підганяти CV вручну під кожну вакансію.",
+  },
+  {
+    name: "Ірина",
+    role: "Антверпен · UA: Завідувач господарства → BE: Verantwoordelijke TD",
+    body: "Проблема виявилась у форматі. За 15 хвилин — нове резюме. За тиждень — перше запрошення.",
   },
 ];
 
@@ -545,27 +599,29 @@ function Why() {
       <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
         <FadeIn>
           <span className="text-xs uppercase tracking-[0.18em] text-sage-dark font-medium">
-            Чому AISTA, а не консультант
+            Що змінюється
           </span>
           <h2 className="mt-3 font-display text-3xl sm:text-4xl leading-tight">
-            €9 замість €45–€100.{" "}
-            <span className="text-sage-dark italic">15 хвилин замість двох тижнів.</span>
+            15 хвилин замість{" "}
+            <span className="text-sage-dark italic">
+              20 годин на тиждень.
+            </span>
           </h2>
           <p className="mt-5 text-ink-soft text-lg leading-relaxed">
-            CV-консультант робить шаблон і просить переписати ще раз. AISTA
-            знає 4 професії глибоко: бухгалтер, вчитель, офіс-менеджер,
-            медсестра. Інші — у роботі.
+            Замість хаотичного пошуку — системний підхід. Замість тиші —
+            запрошення. Одна анкета, два треки: survival (куди йти зараз) і
+            professional (після визнання диплому).
           </p>
         </FadeIn>
 
         <FadeIn delay={0.15}>
           <div className="rounded-3xl ring-1 ring-ink/5 card-shadow bg-white overflow-hidden">
-            <CompareRow head left="CV-консультант" right="AISTA" />
-            <CompareRow l="€45–€100" r="€9" />
-            <CompareRow l="2 тижні · 3 правки" r="15 хвилин" />
-            <CompareRow l="Шаблонний переклад" r="Адаптація рівня посади" />
-            <CompareRow l="Без ATS-ключів" r="ATS-ключі з вакансії" />
-            <CompareRow l="—" r="Бонус: 4 PDF-уроки NL" />
+            <CompareRow head left="Без AISTA" right="З AISTA" />
+            <CompareRow l="3+ години на одну заявку" r="15 хвилин" />
+            <CompareRow l="Десятки відмов, нуль відповідей" r="CV доходить до рекрутера" />
+            <CompareRow l="Сумніви у власній кваліфікації" r="Впевненість у своїй фаховості" />
+            <CompareRow l="Хаотичний пошук без системи" r="Список посад + ATS-ключі" />
+            <CompareRow l="€90+ за консультацію" r="€9 одноразово" />
           </div>
         </FadeIn>
       </div>
@@ -604,10 +660,51 @@ function CompareRow({
   );
 }
 
+/* ──────────────────────────────────────────────── AUTHOR */
+function Author() {
+  return (
+    <section className="bg-cream-2/40 py-20 sm:py-28">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <FadeIn>
+          <div className="max-w-3xl mx-auto grid sm:grid-cols-[auto_1fr] gap-8 items-start">
+            <div className="size-20 rounded-full bg-forest grid place-items-center text-cream font-display text-3xl shrink-0 mx-auto sm:mx-0">
+              N
+            </div>
+            <div>
+              <span className="text-xs uppercase tracking-[0.18em] text-sage-dark font-medium">
+                Хто за цим стоїть
+              </span>
+              <h2 className="mt-2 font-display text-2xl sm:text-3xl">
+                Наталія Стасюк
+              </h2>
+              <p className="text-sm text-muted mt-1">
+                Сертифікована AI-фахівець · 4 роки у Бельгії
+              </p>
+
+              <p className="mt-5 text-ink-soft leading-relaxed">
+                Переїхавши з України до Бельгії в 2022 році з двома синами,
+                дипломом економіста, багаторічним досвідом та 5-ма мовами, я не
+                змогла одразу знайти роботу. Я пройшла цей шлях сама — і
+                зробила сервіс, якого мені не вистачало.
+              </p>
+
+              <div className="mt-6 grid grid-cols-3 gap-4 max-w-sm">
+                <Stat n="4 роки" l="у Бельгії" />
+                <Stat n="100+" l="резюме створено" />
+                <Stat n="+53%" l="більше відгуків" />
+              </div>
+            </div>
+          </div>
+        </FadeIn>
+      </div>
+    </section>
+  );
+}
+
 /* ──────────────────────────────────────────────── FAQ */
 function FAQ() {
   return (
-    <section id="faq" className="bg-cream-2/40 py-20 sm:py-28">
+    <section id="faq" className="py-20 sm:py-28">
       <div className="mx-auto max-w-3xl px-5 sm:px-8">
         <FadeIn>
           <span className="text-xs uppercase tracking-[0.18em] text-sage-dark font-medium">
@@ -641,28 +738,40 @@ function FAQ() {
 
 const FAQS = [
   {
-    q: "А якщо CV буде поганим?",
-    a: "Повернемо €9 без питань протягом 24 годин після оплати. Напиши на hello@aista.be — гроші повернуться на ту ж картку.",
+    q: "Моя нідерландська на рівні А2. Це проблема?",
+    a: "Ні. Вводиш дані рідною мовою — сервіс перекладає нідерландською. Нідерландська потрібна тобі для співбесіди, не для анкети.",
   },
   {
-    q: "Моєї професії немає у списку?",
-    a: "Зараз глибокі маппінги для бухгалтерії, педагогіки, офіс-менеджменту і медицини. Engineer, doctor, IT — у розробці. Якщо твоєї немає — напиши, додамо в чергу.",
+    q: "Мій диплом ще не визнаний у Бельгії.",
+    a: "Не страшно. Визнання обов'язкове лише для певних регульованих професій (медицина, педагогіка). Для більшості — CV достатньо. Ми також робимо survival track — куди можна влаштуватися прямо зараз.",
   },
   {
-    q: "Це справді працює без визнання диплому?",
-    a: "Так. Ми робимо два варіанти: survival track (куди можна влаштуватися зараз без NARIC/RIZIV) і professional track (куди повернутися після визнання). Обидва на одній анкеті.",
+    q: "Чим це відрізняється від Europass?",
+    a: "Europass — загальноєвропейський шаблон. Роботодавці Фландрії його не люблять: він надто формальний і не адаптований під бельгійські ATS. AISTA генерує CV у бельгійському форматі з правильними ключовими словами.",
   },
   {
-    q: "Чому DOCX, а не PDF?",
-    a: "У Бельгії стандарт — DOCX. ATS-системи парсять його точніше, а HR може додавати нотатки. PDF — для портфоліо, не для відгуку на вакансію.",
+    q: "Скільки часу займе створення резюме?",
+    a: "15 хвилин від першого кроку до готового CV на email. Анкета — 7 кроків, оплата — 1 хвилина, генерація — 5–10 хвилин.",
   },
   {
-    q: "Скільки чекати лист з документами?",
-    a: "Зазвичай 5–10 хвилин після оплати. Якщо за 30 хвилин не прийшло — перевір спам або напиши, поправимо.",
+    q: "Що таке ATS-фільтр і чому він мене відсіює?",
+    a: "Більшість компаній у Бельгії використовують програму, яка автоматично перевіряє резюме до того, як його побачить людина. Якщо немає потрібних ключових слів нідерландською — заявка закривається автоматично.",
   },
   {
-    q: "Хто за цим стоїть?",
-    a: "Nataliia Stasiuk — українка у Бельгії, пройшла цей шлях сама. Сервіс зроблено не великим агенством, а людиною, яка розуміє Олену з Гента, бо колись була нею.",
+    q: "Я вже надсилала багато резюме — нічого. Чому зараз буде інакше?",
+    a: "Якщо рекрутер не бачить ключових слів або резюме не пройшло автофільтр — результат нульовий незалежно від досвіду. AISTA вирішує саме цю проблему: формат, ключові слова, рівень посади.",
+  },
+  {
+    q: "З мене потім будуть списуватися якісь гроші?",
+    a: "Ні — одноразова оплата. Ніяких підписок, ніяких автоматичних списань. Ти платиш €9 один раз і отримуєш повний пакет.",
+  },
+  {
+    q: "Я ледве зводжу кінці з кінцями. Навіщо €9?",
+    a: "Консультант з CV у Бельгії бере від €90 за одну сесію — і не гарантує результат. AISTA — €9 одноразово з гарантією повернення протягом 7 днів. Це інвестиція у першу відповідь від роботодавця.",
+  },
+  {
+    q: "Якщо мені потрібне буде інше резюме для іншої вакансії?",
+    a: "Ти отримаєш можливість купити пакет 5 резюме + 5 мотиваційних листів за €22. Це €4.40 за одну якісну заявку замість 3 годин ручної роботи.",
   },
 ];
 
@@ -675,22 +784,22 @@ function FinalCTA() {
           <div className="absolute inset-0 grain opacity-40" />
           <div className="relative">
             <h2 className="font-display text-3xl sm:text-5xl leading-tight max-w-2xl mx-auto">
-              Один платіж. Готове CV. Шанс на першу{" "}
-              <span className="italic text-sage-light">«так»</span>.
+              Зроби резюме, яке{" "}
+              <span className="italic text-sage-light">нарешті прочитають</span>.
             </h2>
             <p className="mt-5 text-cream/75 text-lg max-w-xl mx-auto">
-              Не підписка. Не курс. Пакет, який треба один раз — щоб роботодавець
-              нарешті побачив твій справжній досвід.
+              Одноразова оплата. Без підписок. Без сюрпризів.
+              Гарантія 7 днів — одне повідомлення і гроші повертаються.
             </p>
             <Link
               href={CTA_HREF}
               className="btn-press mt-9 inline-flex items-center justify-center gap-2 rounded-full bg-cream text-forest px-7 py-4 text-base font-semibold hover:bg-clay-soft"
             >
-              Створити моє CV за €9
+              Нарешті бути побаченою як спеціаліст — €9
               <ArrowRight className="size-4" />
             </Link>
             <div className="mt-5 text-sm text-cream/65">
-              Stripe · Bancontact · 24 год гарантія
+              Stripe · Bancontact · Гарантія 7 днів
             </div>
           </div>
         </div>
@@ -711,7 +820,7 @@ function Footer() {
           </div>
           <p className="mt-3 text-muted max-w-sm leading-relaxed">
             Сервіс для українок у Бельгії: AI-адаптація CV під бельгійський
-            ринок праці. Зроблено з Genti з ❤
+            ринок праці. Зроблено з Гента з ❤
           </p>
         </div>
         <div className="sm:text-right text-muted">
@@ -731,7 +840,7 @@ function MobileStickyCTA() {
         href={CTA_HREF}
         className="btn-press flex items-center justify-center gap-2 rounded-full bg-forest text-cream py-3.5 font-semibold w-full"
       >
-        Створити CV за €9
+        Нарешті бути побаченою як спеціаліст — €9
         <ArrowRight className="size-4" />
       </Link>
     </div>
