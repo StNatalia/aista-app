@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+
+export const maxDuration = 60
 import { generateCVAndProfessions, generateMotivationLetter } from '@/lib/claude'
 import { generateCVDocx, generateMotivationLetterDocx } from '@/lib/docx-generator'
 import { sendCVPackage } from '@/lib/email'
